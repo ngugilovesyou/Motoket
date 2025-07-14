@@ -194,5 +194,11 @@ CORS_ALLOWED_ORIGINS = [
     "https://27f8-197-237-161-183.ngrok-free.app",
     "https://motoketapi.onrender.com"
 ]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "motoketapi.onrender.com"
+]
+
 
 CORS_ALLOW_CREDENTIALS = True
