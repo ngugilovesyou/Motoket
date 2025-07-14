@@ -51,7 +51,7 @@ def generate_jwt(user):
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
     return token  
 @api_view(['GET'])
-def home():
+def home(request):
     return Response({"message": "Welcome to our API"})
 @api_view(['POST'])
 def register_user(request):
