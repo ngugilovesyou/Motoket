@@ -1,0 +1,4 @@
+venv
+server/.env
+client/node_modules
+client/src/.env
