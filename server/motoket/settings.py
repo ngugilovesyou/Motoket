@@ -192,6 +192,7 @@ MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://27f8-197-237-161-183.ngrok-free.app",
+    "https://motoketapi.onrender.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True

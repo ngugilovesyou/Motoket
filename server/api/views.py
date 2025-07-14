@@ -49,7 +49,10 @@ def generate_jwt(user):
         'iat': datetime.utcnow(),
     }
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-    return token        
+    return token  
+@api_view(['GET'])
+def home():
+    return Response({"message": "Welcome to our API"})
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':

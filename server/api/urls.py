@@ -4,13 +4,14 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import admin_chats, callback_payment, chat_messages, create_chat, favourite_vehicle, get_admin, get_user, get_user_favourite, get_vehicle_details,get_all_vehicles,capture_paypal_order, create_paypal_order, get_user_vehicles, is_favorited, login_admin, make_payment, payment_status,register_user,login_user,delete_user,logout_user, unfavourite_vehicle, update_vehicle, send_message, join_chat
+from .views import admin_chats, callback_payment, chat_messages, create_chat, favourite_vehicle, get_admin, get_user, get_user_favourite, get_vehicle_details,get_all_vehicles,capture_paypal_order, create_paypal_order, get_user_vehicles, home, is_favorited, login_admin, make_payment, payment_status,register_user,login_user,delete_user,logout_user, unfavourite_vehicle, update_vehicle, send_message, join_chat
 from .cloudinary import image_posting
 from .cloudinary import post_vehicle
 
 
 
 urlpatterns = [
+    path('/', home, name='home'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', register_user, name='register_user'),
