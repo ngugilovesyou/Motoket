@@ -2,9 +2,9 @@ venv
 server/.env
 client/node_modules
 client/src/.env
-server/api/migrations
 server/api/__pycache__
 server/motoket/__pycache__
 server/.venv
 server/api/__pycache__
 server/motoket/__pycache__
+server/motoket.sqlite3

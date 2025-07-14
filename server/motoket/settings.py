@@ -14,6 +14,8 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # paypal payment
 PAYPAL_CLIENT_ID = config("PAYPAL_CLIENT_ID", default="")
@@ -117,12 +119,19 @@ WSGI_APPLICATION = 'motoket.wsgi.application'
 #     }
 # }
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'new_db_yxuk',
+        'USER': 'new_db_yxuk_user',
+        'PASSWORD': '8B8JW8PRs5x81YDZdY1XvfMk70SAXsIL',
+        'HOST': 'dpg-d1qkdnk9c44c739n4vjg-a.render.com',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',  # required by Render
+        },
+    }
 }
+
 
 
 # Password validation

@@ -13,11 +13,11 @@ class User(models.Model):
     last_name = models.CharField(max_length=15, null=False)
     image_url = models.CharField(max_length=200, null=True)
     email = models.EmailField(max_length=100, unique=True, null=False, default=None)
-    role=models.CharField(null=False, default='Buyer')
+    role=models.CharField(null=False, default='Buyer', max_length=6)
     password = models.CharField(max_length=100, null=False)
     is_admin= models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)\
     
     def save(self, *args, **kwargs):
         if not self.password.startswith('pbkdf2_') and not self.password.startswith('$2b$'):
