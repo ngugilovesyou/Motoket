@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
 
-    fetch(`http://127.0.0.1:8000/api/${user_id}/get_user`, {
+    fetch(`https://motoketapi.onrender.com/api/${user_id}/get_user`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
 
-   fetch(`http://127.0.0.1:8000/api/${user_id}/get_admin`, {
+   fetch(`https://motoketapi.onrender.com/api/${user_id}/get_admin`, {
      method: "GET",
      headers: {
        "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 //     const user_id = sessionStorage.getItem("user_id");
 
 //     if (user_id) {
-//       fetch(`http://127.0.0.1:8000/api/${user_id}/get_admin`, {
+//       fetch(`https://motoketapi.onrender.com/api/${user_id}/get_admin`, {
 //         method: "GET",
 //         headers: {
 //           "Content-Type": "application/json",

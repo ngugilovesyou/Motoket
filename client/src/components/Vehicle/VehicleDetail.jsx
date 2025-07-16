@@ -41,7 +41,7 @@ export default function VehicleDetails() {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8000/api/get_vehicle_details/${slug}/`
+          `https://motoketapi.onrender.com/api/get_vehicle_details/${slug}/`
         );
         if (!response.ok) {
           throw new Error("Vehicle not found");
@@ -70,7 +70,7 @@ export default function VehicleDetails() {
     const fetchFavoriteStatus = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/api/${user.id}/${vehicle.id}/is_favourited/`
+          `https://motoketapi.onrender.com/api/${user.id}/${vehicle.id}/is_favourited/`
         );
         const data = await res.json();
         setIsFavorited(data.is_favorited);
@@ -181,7 +181,7 @@ export default function VehicleDetails() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/${userId}/${vehicleId}/favourite/`,
+        `https://motoketapi.onrender.com/api/${userId}/${vehicleId}/favourite/`,
         {
           method: "POST",
           headers: {

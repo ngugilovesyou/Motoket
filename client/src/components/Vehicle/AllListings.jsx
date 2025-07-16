@@ -33,7 +33,7 @@ function AllListings() {
     const fetchListings = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/api/all_vehicles/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`
+          `https://motoketapi.onrender.com/api/all_vehicles/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`
         );
         const data = await res.json();
         console.log("data from all listings", data);

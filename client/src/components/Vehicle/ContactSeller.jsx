@@ -12,7 +12,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
   // useEffect(() => {
   //   // Step 1: Fetch or create the chat
   //   axios
-  //     .get("http://127.0.0.1:8000/api/get_chats/", { withCredentials: true })
+  //     .get("https://motoketapi.onrender.com/api/get_chats/", { withCredentials: true })
   //     .then((res) => {
   //       const chat = res.data.data;
   //       console.log("the short-id of the chat is: ", chat);
@@ -21,7 +21,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
   //       // Step 2: Join chat with seller as acceptor
   //       axios
   //         .post(
-  //           "http://127.0.0.1:8000/api/join_chat/",
+  //           "https://motoketapi.onrender.com/api/join_chat/",
   //           {
   //             chat_id: chat.short_id,
   //           },
@@ -38,7 +38,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/create_chat/",
+        "https://motoketapi.onrender.com/api/create_chat/",
         { buyer_id: currentUser.id, vehicle_id:vehicle.id },
 
         { withCredentials: true }
@@ -66,7 +66,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/send_message/",
+        "https://motoketapi.onrender.com/api/send_message/",
         {
           sender_id: currentUser.id,
           text: input,
