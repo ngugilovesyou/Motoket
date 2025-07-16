@@ -9,8 +9,8 @@ export const AuthProvider = ({ children }) => {
   // const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("access_token");
-    const user_id = sessionStorage.getItem("user_id");
+    const token = localStorage.getItem("access_token");
+    const user_id = localStorage.getItem("user_id");
 
     if (token && user_id) {
       setIsAuthenticated(true);
@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }) => {
   }, [setUser, setIsAuthenticated]);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("access_token");
-    const user_id = sessionStorage.getItem("user_id");
+    const token = localStorage.getItem("access_token");
+    const user_id = localStorage.getItem("user_id");
 
     if (token && user_id) {
       setIsAuthenticated(true);
@@ -71,8 +71,8 @@ export const AuthProvider = ({ children }) => {
 //   const [user, setUser] = useState(null);
 
 //   useEffect(() => {
-//     // const token = sessionStorage.getItem("access_token");
-//     const user_id = sessionStorage.getItem("user_id");
+//     // const token = localStorage.getItem("access_token");
+//     const user_id = localStorage.getItem("user_id");
 
 //     if (user_id) {
 //       fetch(`https://motoketapi.onrender.com/api/${user_id}/get_admin`, {
