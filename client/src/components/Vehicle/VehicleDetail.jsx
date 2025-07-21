@@ -171,8 +171,8 @@ export default function VehicleDetails() {
   const mainImage = vehicleImages.length > 0 ? vehicleImages[0].image_url : "";
 
   const handleFavourite = async (vehicleId) => {
-    const userId = sessionStorage.getItem("user_id");
-    const token = sessionStorage.getItem("access_token");
+    const userId = localStorage.getItem("user_id");
+    const token = localStorage.getItem("access_token");
 
     if (!userId || !token) {
       alert("Please login to favorite a vehicle.");

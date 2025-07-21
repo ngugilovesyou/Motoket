@@ -69,8 +69,8 @@ function Login() {
 
 
      // Store the token and user information
-     sessionStorage.setItem("access_token", data.token);
-     sessionStorage.setItem("user_id", data.user.id);
+     localStorage.setItem("access_token", data.token);
+     localStorage.setItem("user_id", data.user.id);
      setUser(data.user);
      setIsAuthenticated(true); 
      // For debugging - view what's being stored
