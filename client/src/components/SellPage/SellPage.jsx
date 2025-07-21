@@ -194,10 +194,10 @@ export default function SellPage() {
     }
 
     const currentUserId = localStorage.getItem("user_id");
-    if (!currentUserId) {
-      alert("User not authenticated");
-      return;
-    }
+    // if (!currentUserId) {
+    //   alert("User not authenticated");
+    //   return;
+    // }
 
     setIsSubmitting(true);
 
