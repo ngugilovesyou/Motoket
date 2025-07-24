@@ -21,7 +21,7 @@ import useStore from "../../../store";
 
 
 export default function SellPage() {
-  const {isAuthenticated } = useStore.getState(); 
+  const {isAuthenticated } = useContext(AuthContext); 
   const [formData, setFormData] = useState({
     make: "",
     model: "",
