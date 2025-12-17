@@ -12,7 +12,7 @@ const useStore = create(
       setIsAuthenticated: (value) =>
         set({ isAuthenticated: value, timestamp: Date.now() }),
 
-      // 🔴 new: sign out function
+     
       signOut: () => {
         sessionStorage.removeItem("auth-storage"); // clear storage
         set({ user: false, isAuthenticated: false }); // reset state

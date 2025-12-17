@@ -99,6 +99,24 @@ export default function SellPage() {
       });
     }
   }, [isAuthenticated]);
+  useEffect(() => {
+  if (isAuthenticated && user && !formData.contact_name) {
+    console.log("Auto-filling contact_name from user object");
+    
+    const fullName = `${user.first_name} ${user.last_name}`;
+    
+    setFormData(prev => ({
+      ...prev,
+      contact_name: fullName,
+      contact_email: user.email || prev.contact_email
+    }));
+    
+    console.log("Auto-filled formData:", {
+      contact_name: fullName,
+      contact_email: user.email
+    });
+  }
+}, [isAuthenticated, user, formData.contact_name]);
 
   // const validateForm = () => {
   //   const requiredFields = [
