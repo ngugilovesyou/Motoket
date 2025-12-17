@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
+import Navbar from '../Homepage/Navbar';
 
 function Favourites() {
     const [favourites, setFavourite]=useState([])
@@ -27,6 +28,7 @@ function Favourites() {
     }, []);
   return (
     <>
+    <Navbar />
       <div className="py-16 min-h-screen px-4 sm:px-6 lg:px-8 w-full mx-auto bg-gray-50 dark:bg-gray-900 transition-colors duration-300 border-t border-gray-900 not-only:">
         {favourites.length === 0 ? (
           <p className="text-center col-span-full bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent font-semibold">
