@@ -56,10 +56,6 @@ def home(request):
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':
-        # Print received data for debugging
-        print("Request content type:", request.content_type)
-        print("Raw request body:", request.body)
-        print("Processed request data:", request.data)
         
         # Get all required fields
         first_name = request.data.get('first_name')
@@ -67,16 +63,16 @@ def register_user(request):
         email = request.data.get('email')
         password = request.data.get('password')
         confirm_password = request.data.get('confirm_password')
-        
-        print("Data from frontend", request.data)
+        role = request.data.get('role', 'Buyer')
         
         # Perform validations
-        if not first_name or not last_name  or not email  or not password :
+        if not first_name or not last_name  or not email  or not password or not role:
             missing_fields = []
             if not first_name: missing_fields.append("first_name")
             if not last_name: missing_fields.append("last_name")
             if not email: missing_fields.append("email")
             if not password: missing_fields.append("password")
+            if not role: missing_fields.append("role")
             
             return Response({
                 "error": f"Please fill in all required fields: {', '.join(missing_fields)}"
@@ -85,13 +81,7 @@ def register_user(request):
         if password != confirm_password:
             return Response({"error": "Passwords do not match"}, status=status.HTTP_400_BAD_REQUEST)
         
-        # try:
-        #     if not validate_email(email):
-        #         return Response({"error": "Make sure the email exists"}, status=status.HTTP_400_BAD_REQUEST)
-        # except Exception as e:
-        #     print("validate_email failed:", e)
-        #     return Response({"error": "Invalid email format or validation failed"}, status=status.HTTP_400_BAD_REQUEST)
-        
+       
         
         try:
             if User.objects.filter(email=email).exists():
@@ -103,6 +93,8 @@ def register_user(request):
                 last_name=last_name,
                 password=password, 
                 email=email,
+                role=role
+
             )
             user.save()
             
