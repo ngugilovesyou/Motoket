@@ -97,8 +97,13 @@ export default function SellPage() {
         state: { from: location.pathname }, 
         replace: true, 
       });
+      if (user?.id && !sessionStorage.getItem("user_id")) {
+      sessionStorage.setItem("user_id", user.id);
+      console.log("Set user_id in sessionStorage:", user.id);
     }
-  }, [isAuthenticated]);
+    }
+  }, [isAuthenticated, user, navigate]);
+
   useEffect(() => {
   if (isAuthenticated && user && !formData.contact_name) {
     console.log("Auto-filling contact_name from user object");
@@ -286,11 +291,22 @@ const getDefaultUserEmail = () => {
       return;
     }
 
-    const currentUserId = sessionStorage.getItem("user_id");
-    // if (!currentUserId) {
-    //   alert("User not authenticated");
-    //   return;
-    // }
+     let currentUserId = sessionStorage.getItem("user_id");
+  
+  // If not in sessionStorage, try to get from AuthContext
+  if (!currentUserId && user?.id) {
+    currentUserId = user.id;
+    console.log("Using user ID from context:", currentUserId);
+  }
+  
+  // If still no user ID, show error
+  if (!currentUserId) {
+    alert("User not authenticated. Please log in again.");
+    console.error("No user ID found!");
+    setIsSubmitting(false);
+    return;
+  }
+
 
     setIsSubmitting(true);
 
