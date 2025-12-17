@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Homepage/Navbar';
-
+import { Link } from "react-router-dom";
 function Favourites() {
     const [favourites, setFavourite]=useState([])
     const [totalCount, setTotalCount] = useState(0);
