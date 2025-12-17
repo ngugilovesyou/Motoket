@@ -82,13 +82,7 @@ function Login() {
       sessionStorage.setItem('last_name', data.user.last_name);
       setUser(data.user);
       setIsAuthenticated(true);
-      // For debugging - view what's being stored
-      console.log("Stored user data:", {
-        token: data.token,
-        userId: data.user.id,
-        email: data.user.email,
-      });
-
+      
       // Redirect after short delay
       setTimeout(() => {
         const redirectTo = location.state?.from || "/";
