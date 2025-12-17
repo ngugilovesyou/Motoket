@@ -100,26 +100,54 @@ export default function SellPage() {
     }
   }, [isAuthenticated]);
 
-  const validateForm = () => {
-    const requiredFields = [
-      "make",
-      "model",
-      "year",
-      "mileage",
-      "condition",
-      "region",
-      "price",
-      "contact_name",
-      "contact_phone",
-      "contact_email",
-    ];
+  // const validateForm = () => {
+  //   const requiredFields = [
+  //     "make",
+  //     "model",
+  //     "year",
+  //     "mileage",
+  //     "condition",
+  //     "region",
+  //     "price",
+  //     "contact_name",
+  //     "contact_phone",
+  //     "contact_email",
+  //   ];
 
-    return requiredFields.every((field) => {
-      const value = formData[field];
-      return value !== "" && value !== null && value !== undefined;
-    });
-  };
+  //   return requiredFields.every((field) => {
+  //     const value = formData[field];
+  //     return value !== "" && value !== null && value !== undefined;
+  //   });
+  // };
+const validateForm = () => {
+  const requiredFields = [
+    "make",
+    "model",
+    "year",
+    "mileage",
+    "condition",
+    "region",
+    "price",
+    "contact_name",
+    "contact_phone",
+    "contact_email",
+  ];
 
+  console.log("=== FORM VALIDATION DEBUG ===");
+  console.log("Current formData:", formData);
+  
+  const validationResults = requiredFields.map((field) => {
+    const value = formData[field];
+    const isValid = value !== "" && value !== null && value !== undefined;
+    console.log(`${field}: "${value}" - ${isValid ? "VALID" : "INVALID"}`);
+    return isValid;
+  });
+
+  console.log("All valid:", validationResults.every(v => v));
+  console.log("=============================");
+
+  return validationResults.every(v => v);
+};
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
