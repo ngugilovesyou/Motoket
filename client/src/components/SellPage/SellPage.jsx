@@ -232,8 +232,8 @@ const validateForm = () => {
   }
   
   // Fallback: get from sessionStorage
-  const storedFirstName = sessionStorage.getItem("user_first_name");
-  const storedLastName = sessionStorage.getItem("user_last_name");
+  const storedFirstName = sessionStorage.getItem("first_name");
+  const storedLastName = sessionStorage.getItem("last_name");
   
   if (storedFirstName && storedLastName) {
     return `${storedFirstName} ${storedLastName}`;
