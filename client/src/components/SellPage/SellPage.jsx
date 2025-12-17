@@ -247,17 +247,16 @@ const getDefaultUserEmail = () => {
   
   console.log("User object in getDefaultUserEmail:", user);
   
-  
   if (user.email) {
+    if (!formData.contact_email) {
+      setTimeout(() => {
+        setFormData(prev => ({ ...prev, contact_email: user.email }));
+      }, 0);
+    }
     return user.email;
   }
   
-  if (user.user_email) {
-    return user.user_email;
-  }
-  
-  // Fallback: get from sessionStorage
-  return sessionStorage.getItem("user_email") || "";
+  return "";
 };
 
   const handleSubmit = async (e) => {
