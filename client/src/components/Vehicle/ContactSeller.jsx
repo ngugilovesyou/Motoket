@@ -35,11 +35,19 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
   // }, [vehicle.owner_id]);
   useEffect(() => {
     if (!currentUser?.id) return;
+    // https://motoketapi.onrender.com
 
+    // axios
+    //   .post(
+    //     "https://motoketapi.onrender.com/api/create_chat/",
+    //     { buyer_id: currentUser.id, vehicle_id: vehicle.id },
+
+    //     { withCredentials: true }
+    //   )
     axios
       .post(
         "https://motoketapi.onrender.com/api/create_chat/",
-        { buyer_id: currentUser.id, vehicle_id:vehicle.id },
+        { buyer_id: currentUser.id, vehicle_id: vehicle.id },
 
         { withCredentials: true }
       )

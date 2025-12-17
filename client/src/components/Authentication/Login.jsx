@@ -1,6 +1,14 @@
 /* eslint-disable no-unused-vars */
-import {React, useEffect, useState} from "react";
-import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { React, useEffect, useState } from "react";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -11,12 +19,12 @@ function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { setUser, setIsAuthenticated } = useStore.getState(); 
+  const { setUser, setIsAuthenticated } = useStore.getState();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -32,64 +40,63 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   }
 
- async function handleSubmit() {
-   if (formData.email === "" || formData.password === "") {
-     setErrors(true);
-     return;
-   }
+  async function handleSubmit() {
+    if (formData.email === "" || formData.password === "") {
+      setErrors(true);
+      return;
+    }
 
-   try {
-     const response = await fetch("https://motoketapi.onrender.com/api/login/", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({ 
-  email: formData.email,
-  password: formData.password,
-  admin_only: true,
-}),
-       credentials: "include",
-     });
+    try {
+      const response = await fetch("https://motoketapi.onrender.com/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          admin_only: true,
+        }),
+        credentials: "include",
+      });
 
-     const data = await response.json();
+      const data = await response.json();
 
-     if (!response.ok) {
-       const errorMessage =
-         data.error ||
-         data.message ||
-         (data.errors
-           ? Object.values(data.errors).flat().join(", ")
-           : "Login failed");
-       throw new Error(errorMessage);
-     }
+      if (!response.ok) {
+        const errorMessage =
+          data.error ||
+          data.message ||
+          (data.errors
+            ? Object.values(data.errors).flat().join(", ")
+            : "Login failed");
+        throw new Error(errorMessage);
+      }
 
-     // Success - store user data
-     toast.success("Logging you in");
+      // Success - store user data
+      toast.success("Logging you in");
 
+      // Store the token and user information
+      sessionStorage.setItem("access_token", data.token);
+      sessionStorage.setItem("user_id", data.user.id);
+      setUser(data.user);
+      setIsAuthenticated(true);
+      // For debugging - view what's being stored
+      console.log("Stored user data:", {
+        token: data.token,
+        userId: data.user.id,
+        email: data.user.email,
+      });
 
-     // Store the token and user information
-     localStorage.setItem("access_token", data.token);
-     localStorage.setItem("user_id", data.user.id);
-     setUser(data.user);
-     setIsAuthenticated(true); 
-     // For debugging - view what's being stored
-     console.log("Stored user data:", {
-       token: data.token,
-       userId: data.user.id,
-       email: data.user.email,
-     });
-    
-     // Redirect after short delay
-     setTimeout(() => {
-       const redirectTo = location.state?.from || "/";
-       navigate(redirectTo, { replace: true });
-     }, 1500);
-   } catch (error) {
-     toast.error(error.message);
-     console.error("Login error:", error);
-   }
- }
+      // Redirect after short delay
+      setTimeout(() => {
+        const redirectTo = location.state?.from || "/";
+        navigate(redirectTo, { replace: true });
+      }, 1500);
+    } catch (error) {
+      toast.error(error.message);
+      console.error("Login error:", error);
+    }
+  }
 
   return (
     <>

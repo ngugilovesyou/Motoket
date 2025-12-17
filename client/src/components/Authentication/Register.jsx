@@ -17,8 +17,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import RegionPicker from "./Regionpicker";
 import { ToastContainer, toast } from "react-toastify";
 import GoogleSignIn from "./GoogleSignin";
-import {NavLink, useNavigate, useLocation} from "react-router-dom";
-
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 function Register() {
   const [step, setStep] = useState(1);
@@ -28,13 +27,12 @@ function Register() {
     email: "",
     password: "",
     confirm_password: "",
-    role:""
+    role: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -135,11 +133,11 @@ function Register() {
       last_name: userData.last_name,
     }));
 
-    setStep(2); 
+    setStep(2);
   };
-  const handleGoogleFailure = (error) =>{
-    console.log(error)
-  }
+  const handleGoogleFailure = (error) => {
+    console.log(error);
+  };
   const handleSubmit = async () => {
     const passwordError = validatePassword(formData.password);
     const confirmError =
@@ -154,13 +152,13 @@ function Register() {
     }));
 
     if (passwordError || confirmError) return;
-    
+
     const requiredFields = [
       "first_name",
       "last_name",
       "email",
       "password",
-      "role"
+      "role",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -168,46 +166,44 @@ function Register() {
         return;
       }
     }
-   
-   try {
-     const response = await fetch("https://motoketapi.onrender.com/api/register/", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-         Accept: "application/json",
-       },
-       body: JSON.stringify(formData),
-       credentials: "include",
-     });
 
-     const data = await response.json();
+    try {
+      const response = await fetch("https://motoketapi.onrender.com/api/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formData),
+        credentials: "include",
+      });
 
-     if (!response.ok) {
-       const errorMessage =
-         data.error ||
-         data.message ||
-         (data.errors
-           ? Object.values(data.errors).flat().join(", ")
-           : "Registration failed");
-       throw new Error(errorMessage);
-     }
+      const data = await response.json();
 
-     toast.success(data.message || "User registered successfully");
-     setFormData({
-       first_name: "",
-       last_name: "",
-       email: "",
-       role:"",
-       password: "",
-       confirm_password: ""
-       
-     });
-    //  const redirectTo = location.state?.from || "/";
-     navigate("/login");
-   } catch (err) {
-     toast.error(err.message || "Registration failed. Please try again.");
-   }
+      if (!response.ok) {
+        const errorMessage =
+          data.error ||
+          data.message ||
+          (data.errors
+            ? Object.values(data.errors).flat().join(", ")
+            : "Registration failed");
+        throw new Error(errorMessage);
+      }
 
+      toast.success(data.message || "User registered successfully");
+      setFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        role: "",
+        password: "",
+        confirm_password: "",
+      });
+      //  const redirectTo = location.state?.from || "/";
+      navigate("/login");
+    } catch (err) {
+      toast.error(err.message || "Registration failed. Please try again.");
+    }
   };
 
   return (

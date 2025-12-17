@@ -11,6 +11,8 @@ import Pricing from "./src/components/Homepage/Pricing";
 import Payment from "./src/components/Payment/Payment";
 import AdminChatDashboard from "./src/components/Admin/AdminChat";
 import AdminLogin from "./src/components/Admin/AdminLogin";
+import Profile from "./src/components/PersonalInfo/Profile";
+import Favourites from "./src/components/PersonalInfo/Favourites";
 
 const routes = createBrowserRouter([
   {
@@ -64,6 +66,14 @@ const routes = createBrowserRouter([
   {
     path:"/admin/login",
     element:<AdminLogin />
+  },
+  {
+    path:"/profile",
+    element:<Profile />
+  },
+  {
+    path:"/myfavourites",
+    element:<Favourites />
   }
 ]);
 export default routes;

@@ -49,9 +49,13 @@ function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useContext(AuthContext);
-  const [buyer, setBuyer] = useState("");
-  const { setIsAuthenticated, setUser } = useStore();
+  const { isAuthenticated, user, setIsAuthenticated, setUser } =useContext(AuthContext);
+  const [buyer, setBuyer] = useState(user?.role === "Buyer" ? "Buyer" : "");
+  const signOut = useStore((state) => state.signOut);
+  
+  useEffect(() => {
+    setBuyer(user?.role === "Buyer" ? "Buyer" : "");
+  }, [user?.role]);
 
   function UserProfileDropdown({ onSelect, userInfo }) {
     if (user.role == "Buyer") {
@@ -64,7 +68,7 @@ function Navbar() {
           <div className="flex items-center space-x-4">
             <div className="relative">
               <Avatar
-                src={userInfo?.avatar || "/broken-image.jpg"}
+                src={userInfo.image_url || "/broken-image.jpg"}
                 sx={{ width: 56, height: 56 }}
                 className="ring-2 ring-white dark:ring-gray-600 shadow-lg"
               />
@@ -109,7 +113,7 @@ function Navbar() {
                 <Car size={18} className="text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <span className="font-medium block">My Listings</span>
+                <span className="font-medium block">My Favourites</span>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                   View and manage your cars
                 </span>
@@ -157,7 +161,10 @@ function Navbar() {
         {/* Logout */}
         <div className="py-2">
           <button
-            onClick={() => {}}
+            onClick={() => {
+              signOut(); // clear session + reset store
+              navigate("/home"); // redirect after sign out
+            }}
             className="w-full flex items-center px-6 py-3 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
           >
             <div className="w-10 h-10 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center mr-4">
@@ -200,14 +207,7 @@ function Navbar() {
         navigate("/settings");
         break;
       case "Logout":
-        sessionStorage.removeItem("user_id");
-        sessionStorage.removeItem("access_token");
-
-        // Reset Zustand store
-        setUser(false);
-        setIsAuthenticated(false);
-
-        // Navigate
+        signOut();
         navigate("/home");
         break;
       default:
@@ -278,23 +278,30 @@ function Navbar() {
                 >
                   Home
                 </NavLink>
-                <NavLink
-                  to={"/sell"}
-                  className="text-sm font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-300 relative group"
-                >
-                  Sell
-                </NavLink>
+                {buyer ? (
+                  <>
+                    <NavLink
+                      to={"/myfavourites"}
+                      className="text-sm font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-300 relative group"
+                    >
+                      Favourites
+                    </NavLink>
+                   
+                  </>
+                ) : (
+                  <NavLink
+                    to={"/sell"}
+                    className="text-sm font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-300 relative group"
+                  >
+                    Sell
+                  </NavLink>
+                )}
+
                 <NavLink
                   to={"/listings"}
                   className="text-sm font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-300 relative group"
                 >
                   Browse
-                </NavLink>
-                <NavLink
-                  to={"/pricing"}
-                  className="text-sm font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-300 relative group"
-                >
-                  Pricing
                 </NavLink>
               </div>
 
@@ -354,20 +361,23 @@ function Navbar() {
               >
                 Home
               </NavLink>
-              <NavLink
-                to={"/sell"}
-                className="block px-3 py-3 text-base font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Sell your Car
-              </NavLink>
-              <NavLink
-                to={"/pricing"}
-                className="block px-3 py-3 text-base font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pricing
-              </NavLink>
+              {buyer ? (
+                <NavLink
+                  to={"/myfavourites"}
+                  className="block px-3 py-3 text-base font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  My favourites
+                </NavLink>
+              ) : (
+                <NavLink
+                  to={"/sell"}
+                  className="block px-3 py-3 text-base font-light tracking-wider uppercase text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sell your Car
+                </NavLink>
+              )}
 
               {/* Mobile User Actions */}
               <div className="pt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
@@ -383,13 +393,15 @@ function Navbar() {
                 </button>
                 <button
                   onClick={() => {
-                    handleOptionSelect("My Listings");
+                    handleOptionSelect(buyer ? "My Favourites" : "My Listings");
                     setMobileMenuOpen(false);
                   }}
                   className="w-full flex items-center px-3 py-3 text-left text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
                 >
                   <Car size={18} className="mr-3" />
-                  <span className="font-medium">My Listings</span>
+                  <span className="font-medium">
+                    {buyer ? "My Favourites" : "My Listings"}
+                  </span>
                 </button>
                 <button
                   onClick={() => {

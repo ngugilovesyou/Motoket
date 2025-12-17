@@ -3,11 +3,52 @@ from .models import  FavouritedVehicle, User, Vehicle, VehicleImage, Chat, ChatM
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ('id','first_name', 'last_name', 'email', 'password', 'role','favourites', 'created_at', 'updated_at')
+#         extra_kwargs = {'password': {'write_only': True}}
+        
 class UserSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
-        fields = ('id','first_name', 'last_name', 'email', 'password', 'role','favourites')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('id', 'first_name', 'last_name', 'email', 'password', 'role', 
+                'favourites', 'created_at', 'updated_at', 'image_url')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'image_url': {'read_only': True}
+        }
+    
+    def get_image_url(self, obj):
+        if not obj.image_url:
+            return None
+            
+        cloud_name = getattr(settings, 'CLOUDINARY_CLOUD_NAME', 'your_cloud_name')
+        
+        # Define transformations for different contexts
+        transformations = {
+            'thumbnail': 'c_fill,w_100,h_100,f_auto,q_auto',  # For small thumbnails
+            'profile': 'c_fill,w_300,h_300,f_auto,q_auto',    # Standard profile size
+            'large': 'c_limit,w_800,h_800,f_auto,q_auto'     # For full-size display
+        }
+        
+        # Get requested transformation from context (default to 'profile')
+        transform_type = self.context.get('transform', 'profile')
+        
+        # Check if it's already a full URL
+        if obj.image_url.startswith(('http://', 'https://')):
+            return obj.image_url
+            
+        # Check if it's a Cloudinary public_id
+        if '/' in obj.image_url or '.' in obj.image_url:
+            # Handle full Cloudinary URLs or public_ids
+            if obj.image_url.startswith(f'https://res.cloudinary.com/{cloud_name}/'):
+                return obj.image_url
+            return f"https://res.cloudinary.com/{cloud_name}/image/upload/{transformations[transform_type]}/{obj.image_url}"
+            
+        return None  
         
 class VehicleImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()

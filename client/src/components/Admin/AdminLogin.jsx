@@ -26,8 +26,6 @@ function AdminLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -78,8 +76,8 @@ function AdminLogin() {
       toast.success("Logging you in");
 
       // Store the token and user information
-      localStorage.setItem("access_token", data.token);
-      localStorage.setItem("user_id", data.user.id);
+      sessionStorage.setItem("access_token", data.token);
+      sessionStorage.setItem("user_id", data.user.id);
       // For debugging - view what's being stored
       console.log("Stored user data:", {
         token: data.token,
@@ -162,8 +160,6 @@ function AdminLogin() {
             >
               Submit
             </Button>
-
-           
           </div>
         </div>
       </div>

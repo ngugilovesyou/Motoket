@@ -5,12 +5,12 @@ import useStore from "../../../store";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const {isAuthenticated, setIsAuthenticated, user, setUser} = useStore();
+  const { isAuthenticated, setIsAuthenticated, user, setUser } = useStore();
   // const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const user_id = localStorage.getItem("user_id");
+    const token = sessionStorage.getItem("access_token");
+    const user_id = sessionStorage.getItem("user_id");
 
     if (token && user_id) {
       setIsAuthenticated(true);
@@ -29,31 +29,29 @@ export const AuthProvider = ({ children }) => {
         setUser(data);
         setIsAuthenticated(true);
       });
-
-  
   }, [setUser, setIsAuthenticated]);
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const user_id = localStorage.getItem("user_id");
+    const token = sessionStorage.getItem("access_token");
+    const user_id = sessionStorage.getItem("user_id");
 
     if (token && user_id) {
       setIsAuthenticated(true);
     }
 
-   fetch(`https://motoketapi.onrender.com/api/${user_id}/get_admin`, {
-     method: "GET",
-     headers: {
-       "Content-Type": "application/json",
-     },
-     credentials: "include",
-   })
-     .then((response) => response.json())
-     .then((data) => {
-       console.log("user_data", data);
-       setUser(data);
-       setIsAuthenticated(true);
-     });
+    fetch(`https://motoketapi.onrender.com/api/${user_id}/get_admin`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("user_data", data);
+        setUser(data);
+        setIsAuthenticated(true);
+      });
   }, [setUser, setIsAuthenticated]);
 
   return (
@@ -71,8 +69,8 @@ export const AuthProvider = ({ children }) => {
 //   const [user, setUser] = useState(null);
 
 //   useEffect(() => {
-//     // const token = localStorage.getItem("access_token");
-//     const user_id = localStorage.getItem("user_id");
+//     // const token = sessionStorage.getItem("access_token");
+//     const user_id = sessionStorage.getItem("user_id");
 
 //     if (user_id) {
 //       fetch(`https://motoketapi.onrender.com/api/${user_id}/get_admin`, {

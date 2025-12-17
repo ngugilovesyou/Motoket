@@ -34,7 +34,7 @@ export default function VehicleDetails() {
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchVehicleDetails = async () => {
@@ -80,7 +80,7 @@ export default function VehicleDetails() {
     };
 
     fetchFavoriteStatus();
-  }, [user?.id, vehicle?.id]); // 🔁 re-run when these are defined
+  }, [user?.id, vehicle?.id]); 
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % vehicle.images.length);
@@ -131,28 +131,74 @@ export default function VehicleDetails() {
   }, [isImageModalOpen]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        Loading...
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="h-12 w-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+        <p className="text-sm text-white/70 tracking-wide">Loading...</p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        Error: {error}
+
+if (error) {
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="max-w-md w-full text-center space-y-4">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10">
+          <span className="text-red-500 text-xl">⚠️</span>
+        </div>
+
+        <h2 className="text-lg font-semibold text-white">
+          Something went wrong
+        </h2>
+
+        <p className="text-sm text-white/70">
+          {typeof error === "string"
+            ? error
+            : "An unexpected error occurred. Please try again."}
+        </p>
+
+        <button
+          onClick={() => window.location.reload()}
+          className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-white/90 transition"
+        >
+          Retry
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
 
   if (!vehicle) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        Vehicle not found
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="max-w-md w-full text-center space-y-4">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+          <span className="text-xl">🚗</span>
+        </div>
+
+        <h2 className="text-lg font-semibold text-white">
+          Vehicle not found
+        </h2>
+
+        <p className="text-sm text-white/70">
+          The vehicle you’re looking for doesn’t exist or may have been removed.
+        </p>
+
+        <button
+          onClick={() => window.history.back()}
+          className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-white/90 transition"
+        >
+          Go back
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
 
   // Add null checks for images before rendering
   const vehicleImages = vehicle.images.map((image) => ({
@@ -171,17 +217,18 @@ export default function VehicleDetails() {
   const mainImage = vehicleImages.length > 0 ? vehicleImages[0].image_url : "";
 
   const handleFavourite = async (vehicleId) => {
-    const userId = localStorage.getItem("user_id");
-    const token = localStorage.getItem("access_token");
+  //   const userId = sessionStorage.getItem("user_id");
+  //   console.log("user id from vehicle detail", userId)
+    const token = sessionStorage.getItem("access_token");
 
-    if (!userId || !token) {
+    if (!isAuthenticated) {
       alert("Please login to favorite a vehicle.");
       return;
     }
 
     try {
       const response = await fetch(
-        `https://motoketapi.onrender.com/api/${userId}/${vehicleId}/favourite/`,
+        `https://motoketapi.onrender.com/api/${user.id}/${vehicleId}/favourite/`,
         {
           method: "POST",
           headers: {

@@ -103,7 +103,7 @@ export default function AdminChatDashboard() {
                   : "bg-gray-800 hover:bg-gray-700"
               }`}
             >
-             {chat.initiator || "User"}-{chat.vehicle.slug}
+              {chat.initiator || "User"}-{chat.vehicle.slug}
             </button>
           ))}
         </div>
@@ -116,7 +116,7 @@ export default function AdminChatDashboard() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto space-y-3 p-3 bg-gray-800 rounded-lg">
               {messages.map((msg, i) => {
-                 const isAdmin = msg.sender_id == user.id;
+                const isAdmin = msg.sender_id == user.id;
                 return (
                   <div
                     key={i}

@@ -85,12 +85,12 @@ def register_user(request):
         if password != confirm_password:
             return Response({"error": "Passwords do not match"}, status=status.HTTP_400_BAD_REQUEST)
         
-        try:
-            if not validate_email(email):
-                return Response({"error": "Make sure the email exists"}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            print("validate_email failed:", e)
-            return Response({"error": "Invalid email format or validation failed"}, status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        #     if not validate_email(email):
+        #         return Response({"error": "Make sure the email exists"}, status=status.HTTP_400_BAD_REQUEST)
+        # except Exception as e:
+        #     print("validate_email failed:", e)
+        #     return Response({"error": "Invalid email format or validation failed"}, status=status.HTTP_400_BAD_REQUEST)
         
         
         try:
@@ -209,35 +209,7 @@ def get_admin(request, user_id):
         print("Error during user retrieval:", e)
         traceback.print_exc()
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-@api_view(['PATCH'])
-def update_profile(request, user_id):
-    if request.method == 'PATCH':
-        user = User.objects.get(id=user_id)
-        username = request.data.get('username')
-        password = request.data.get('password')
-        email = request.data.get('email')
-        image_url = request.data.get('image_url')
-        
-        try:
-            if username:
-                user.username = username
-            if password:
-                user.password = make_password(password)
-            if email:
-                user.email = email
-            if image_url:
-                user.image_url = image_url
-                
-            user.save()
-            return Response({"message": "Profile updated successfully"}, status=status.HTTP_200_OK)
-
-        except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-                
-        except:
-            return Response({"error": "Failed to update profile"}, status=status.HTTP_400_BAD_REQUEST)
+    
             
 @api_view(['DELETE'])  
 def delete_user(request, user_id):
@@ -353,6 +325,35 @@ def get_vehicle_details(request, slug):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def user_favourite(request, user_id):
+    """
+    Get all favorite vehicles for a specific user
+    """
+    try:
+        # Get the user and their favorites with vehicle data pre-fetched
+        user = User.objects.get(id=user_id)
+        favourites = FavouritedVehicle.objects.filter(user=user).select_related('vehicle')
+        
+        # Serialize the data
+        serializer = FavouriteSerializer(favourites, many=True)
+        
+        return Response({
+            'count': favourites.count(),
+            'results': serializer.data
+        }, status=status.HTTP_200_OK)
+        
+    except User.DoesNotExist:
+        return Response(
+            {"error": "User not found"}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return Response(
+            {"error": str(e)}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        
 @api_view(['POST'])
 def favourite_vehicle(request, user_id, vehicle_id):
     try:

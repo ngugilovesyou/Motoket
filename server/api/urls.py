@@ -4,9 +4,9 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import admin_chats, callback_payment, chat_messages, create_chat, favourite_vehicle, get_admin, get_user, get_user_favourite, get_vehicle_details,get_all_vehicles,capture_paypal_order, create_paypal_order, get_user_vehicles, home, is_favorited, login_admin, make_payment, payment_status,register_user,login_user,delete_user,logout_user, unfavourite_vehicle, update_vehicle, send_message, join_chat
+from .views import admin_chats, callback_payment, chat_messages, create_chat, favourite_vehicle, get_admin, get_user, get_user_favourite, get_vehicle_details,get_all_vehicles,capture_paypal_order, create_paypal_order, get_user_vehicles, home, is_favorited, login_admin, make_payment, payment_status,register_user,login_user,delete_user,logout_user, unfavourite_vehicle,  update_vehicle, send_message, join_chat, user_favourite
 from .cloudinary import image_posting
-from .cloudinary import post_vehicle
+from .cloudinary import post_vehicle,update_profile
 
 
 
@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/login-admin/', login_admin, name='login_admin'),
     path('api/<int:user_id>/get_user/', get_user,name='get_user'),
     path('api/<int:user_id>/get_admin/', get_admin,name='get_admin'),
+    path('api/<int:user_id>/update_profile/', update_profile, name='update_profile'),
     path('api/<int:user_id>/delete/', delete_user, name='delete_user'),
     path('api/logout/', logout_user, name='logout_user'),
     path('api/<int:user_id>/post_vehicle/', post_vehicle, name='post_vehicle'),
@@ -27,7 +28,7 @@ urlpatterns = [
     path('api/all_vehicles/', get_all_vehicles, name='get_all_vehicles'),
     path('api/get_vehicle_details/<slug:slug>/', get_vehicle_details, name='get_vehicle_details'),
     path('api/<int:user_id>/<int:vehicle_id>/favourite/', favourite_vehicle, name='favourite_vehicle'),
-    path('api/get-favourite/', get_user_favourite, name='get_user_favourite'),
+    path('api/get-favourite/', user_favourite, name='user_favourite'),
     path('api/<int:user_id>/<int:vehicle_id>/unfavourite/', unfavourite_vehicle, name="unfavourite_vehicle"),
     path('api/<int:user_id>/<int:vehicle_id>/is_favourited/', is_favorited, name='is_favorited'),
     path("api/paypal/create-order/", create_paypal_order, name="create_paypal_order"),

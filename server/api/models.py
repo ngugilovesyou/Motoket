@@ -17,7 +17,7 @@ class User(models.Model):
     password = models.CharField(max_length=100, null=False)
     is_admin= models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(default=timezone.now)\
+    updated_at = models.DateTimeField(default=timezone.now)
     
     def save(self, *args, **kwargs):
         if not self.password.startswith('pbkdf2_') and not self.password.startswith('$2b$'):

@@ -15,13 +15,12 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import Navbar from "../Homepage/Navbar";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Authentication/Auth";
 import useStore from "../../../store";
 
-
 export default function SellPage() {
-  const {isAuthenticated } = useContext(AuthContext); 
+  const { isAuthenticated, user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     make: "",
     model: "",
@@ -100,7 +99,6 @@ export default function SellPage() {
       });
     }
   }, [isAuthenticated]);
-
 
   const validateForm = () => {
     const requiredFields = [
@@ -190,10 +188,11 @@ export default function SellPage() {
 
     if (!validateForm()) {
       alert("Please fill in all required fields");
+      
       return;
     }
 
-    const currentUserId = localStorage.getItem("user_id");
+    const currentUserId = sessionStorage.getItem("user_id");
     // if (!currentUserId) {
     //   alert("User not authenticated");
     //   return;
@@ -203,6 +202,7 @@ export default function SellPage() {
 
     try {
       const formDataToSend = new FormData();
+      console.log("things to be sent", formDataToSend)
 
       // Append all vehicle data fields
       Object.entries(formData).forEach(([key, value]) => {
@@ -486,7 +486,7 @@ export default function SellPage() {
                     }
                     className="w-full p-3 md:p-3 pl-9 md:pl-12 border-2 border-gray-200 dark:border-gray-600  text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 md:text-base"
                     // className="w-full p-2 md:p-3 pl-9 md:pl-12 bg-gray-500 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg text-white focus:border-white focus:outline-none transition-colors text-sm md:text-base"
-                    placeholder="City, State"
+                    placeholder="eg, Nairobi, Kenya"
                     required
                   />
                 </div>
@@ -653,13 +653,15 @@ export default function SellPage() {
                 </label>
                 <input
                   type="text"
-                  value={formData.contact_name}
+                  value={
+                    formData.contact_name ||
+                    user.first_name + " " + user.last_name
+                  }
                   onChange={(e) =>
                     handleInputChange("contact_name", e.target.value)
                   }
                   className="w-full p-2 md:p-3  border-gray-200 dark:border-gray-600  text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
                   // className="w-full p-2 md:p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-white focus:outline-none transition-colors text-sm md:text-base"
-                  placeholder="John Doe"
                   required
                 />
               </div>
@@ -676,7 +678,7 @@ export default function SellPage() {
                   }
                   className="w-full p-2 md:p-3  border-gray-200 dark:border-gray-600  text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
                   // className="w-full p-2 md:p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-white focus:outline-none transition-colors text-sm md:text-base"
-                  placeholder="(555) 123-4567"
+                  placeholder="0712345678"
                   required
                 />
               </div>
@@ -687,7 +689,7 @@ export default function SellPage() {
                 </label>
                 <input
                   type="email"
-                  value={formData.contact_email}
+                  value={formData.contact_email || user.email}
                   onChange={(e) =>
                     handleInputChange("contact_email", e.target.value)
                   }
@@ -709,7 +711,7 @@ export default function SellPage() {
                   {formData.make} {formData.model}
                 </p>
                 <p>
-                  <span className="font-medium">Price:</span> $
+                  <span className="font-medium">Price:</span> ksh .{" "}
                   {formData.price?.toLocaleString()}
                 </p>
                 <p>
