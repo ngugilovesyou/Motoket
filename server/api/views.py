@@ -146,6 +146,7 @@ def login_user(request):
             "role": user.role,             
             "is_admin": user.is_admin,
             "image_url": user.image_url, 
+            "created_at":user.created_at
         },
         "token": access_token,
     }, status=status.HTTP_200_OK)
