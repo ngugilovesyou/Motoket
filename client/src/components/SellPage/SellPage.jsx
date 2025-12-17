@@ -99,14 +99,12 @@ export default function SellPage() {
       });
       if (user?.id && !sessionStorage.getItem("user_id")) {
       sessionStorage.setItem("user_id", user.id);
-      console.log("Set user_id in sessionStorage:", user.id);
     }
     }
   }, [isAuthenticated, user, navigate]);
 
   useEffect(() => {
   if (isAuthenticated && user && !formData.contact_name) {
-    console.log("Auto-filling contact_name from user object");
     
     const fullName = `${user.first_name} ${user.last_name}`;
     
@@ -116,10 +114,7 @@ export default function SellPage() {
       contact_email: user.email || prev.contact_email
     }));
     
-    console.log("Auto-filled formData:", {
-      contact_name: fullName,
-      contact_email: user.email
-    });
+   
   }
 }, [isAuthenticated, user, formData.contact_name]);
 
@@ -156,20 +151,6 @@ const validateForm = () => {
     "contact_email",
   ];
 
-  console.log("=== FORM VALIDATION DEBUG ===");
-  console.log("Current formData:", formData);
-  
-  const validationResults = requiredFields.map((field) => {
-    const value = formData[field];
-    const isValid = value !== "" && value !== null && value !== undefined;
-    console.log(`${field}: "${value}" - ${isValid ? "VALID" : "INVALID"}`);
-    return isValid;
-  });
-
-  console.log("All valid:", validationResults.every(v => v));
-  console.log("=============================");
-
-  return validationResults.every(v => v);
 };
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -187,18 +168,18 @@ const validateForm = () => {
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length + images.length > 10) {
-      alert("Maximum 10 images allowed");
+      toast.error("Maximum 10 images allowed");
       return;
     }
 
     files.forEach((file) => {
       if (!file.type.match("image.*")) {
-        alert(`${file.name} is not an image file`);
+        toast.error(`${file.name} is not an image file`);
         return;
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        alert(`${file.name} is too large (max 10MB)`);
+        toast.error(`${file.name} is too large (max 10MB)`);
         return;
       }
 
@@ -238,9 +219,6 @@ const validateForm = () => {
   const getDefaultUserName = () => {
   if (!user) return "";
   
-  // Debug: Log what's in user object
-  console.log("User object in getDefaultUserName:", user);
-  
   // Try different possible field names
   if (user.first_name && user.last_name) {
     return `${user.first_name} ${user.last_name}`;
@@ -268,8 +246,6 @@ const validateForm = () => {
 const getDefaultUserEmail = () => {
   if (!user) return "";
   
-  console.log("User object in getDefaultUserEmail:", user);
-  
   if (user.email) {
     if (!formData.contact_email) {
       setTimeout(() => {
@@ -286,7 +262,7 @@ const getDefaultUserEmail = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       
       return;
     }
@@ -296,12 +272,11 @@ const getDefaultUserEmail = () => {
   // If not in sessionStorage, try to get from AuthContext
   if (!currentUserId && user?.id) {
     currentUserId = user.id;
-    console.log("Using user ID from context:", currentUserId);
   }
   
   // If still no user ID, show error
   if (!currentUserId) {
-    alert("User not authenticated. Please log in again.");
+    toast.error("User not authenticated. Please log in again.");
     console.error("No user ID found!");
     setIsSubmitting(false);
     return;
@@ -312,7 +287,6 @@ const getDefaultUserEmail = () => {
 
     try {
       const formDataToSend = new FormData();
-      console.log("things to be sent", formDataToSend)
 
       // Append all vehicle data fields
       Object.entries(formData).forEach(([key, value]) => {
@@ -344,8 +318,7 @@ const getDefaultUserEmail = () => {
         }
       );
 
-      console.log("Vehicle created:", response.data);
-      alert("Vehicle listed successfully!");
+      toast.success("Vehicle listed successfully!");
 
       setCurrentStep(1);
       setFormData({
@@ -378,7 +351,7 @@ const getDefaultUserEmail = () => {
         errorMessage = error.response.data.error;
       }
 
-      alert(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

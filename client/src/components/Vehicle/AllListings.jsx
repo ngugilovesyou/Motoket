@@ -50,14 +50,8 @@ function AllListings() {
     fetchListings();
   }, [currentPage]);
 
-  useEffect(() => {
-    console.log("Updated listings state:", listings);
-  }, [listings]);
 
-  //   const viewCarDetails = (carId) => {
-  //     console.log(`Viewing details for: ${carId}`);
-  //     // You can implement navigation or state logic here
-  //   };
+ 
   return (
     <>
       <Navbar />

@@ -47,9 +47,6 @@ export default function VehicleDetails() {
           throw new Error("Vehicle not found");
         }
         const data = await response.json();
-        console.log("Data of that vehicle", data);
-
-        // Parse the features string into an array if needed
         if (typeof data.features === "string") {
           data.features = JSON.parse(data.features);
         }
@@ -217,12 +214,10 @@ if (error) {
   const mainImage = vehicleImages.length > 0 ? vehicleImages[0].image_url : "";
 
   const handleFavourite = async (vehicleId) => {
-  //   const userId = sessionStorage.getItem("user_id");
-  //   console.log("user id from vehicle detail", userId)
     const token = sessionStorage.getItem("access_token");
 
     if (!isAuthenticated) {
-      alert("Please login to favorite a vehicle.");
+      toast.error("Please login to favorite a vehicle.");
       return;
     }
 
@@ -359,7 +354,6 @@ if (error) {
                       if (!isFavorited) {
                         handleFavourite(vehicle.id);
                       } else {
-                        // optionally implement unfavorite logic
                         setIsFavorited(false);
                       }
                     }}
