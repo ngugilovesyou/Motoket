@@ -35,7 +35,7 @@ function AllListings() {
         //   `https://motoketapi.onrender.com/api/all_vehicles/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`
         // );
         const res = await fetch(
-          `https://motoketapi.onrender.com/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`
+          `https://motoketapi.onrender.com/api/all_vehicles/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`
         );
         const data = await res.json();
         console.log("data from all listings", data);
