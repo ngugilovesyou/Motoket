@@ -94,8 +94,8 @@ export default function SellPage() {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login", {
-        state: { from: location.pathname }, // 👈 Save current path
-        replace: true, // 👈 Avoid stacking history
+        state: { from: location.pathname }, 
+        replace: true, 
       });
     }
   }, [isAuthenticated]);
@@ -182,6 +182,55 @@ export default function SellPage() {
     }
     return new Blob([u8arr], { type: mime });
   };
+
+
+  const getDefaultUserName = () => {
+  if (!user) return "";
+  
+  // Debug: Log what's in user object
+  console.log("User object in getDefaultUserName:", user);
+  
+  // Try different possible field names
+  if (user.first_name && user.last_name) {
+    return `${user.first_name} ${user.last_name}`;
+  }
+  
+  if (user.full_name) {
+    return user.full_name;
+  }
+  
+  if (user.name) {
+    return user.name;
+  }
+  
+  // Fallback: get from sessionStorage
+  const storedFirstName = sessionStorage.getItem("user_first_name");
+  const storedLastName = sessionStorage.getItem("user_last_name");
+  
+  if (storedFirstName && storedLastName) {
+    return `${storedFirstName} ${storedLastName}`;
+  }
+  
+  return "";
+};
+
+const getDefaultUserEmail = () => {
+  if (!user) return "";
+  
+  console.log("User object in getDefaultUserEmail:", user);
+  
+  
+  if (user.email) {
+    return user.email;
+  }
+  
+  if (user.user_email) {
+    return user.user_email;
+  }
+  
+  // Fallback: get from sessionStorage
+  return sessionStorage.getItem("user_email") || "";
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -648,23 +697,19 @@ export default function SellPage() {
               </div>
 
               <div>
-                <label className="block dark:text-white text-gray-600 mb-1 md:mb-2 text-sm md:text-base">
-                  Your Name *
-                </label>
-                <input
-                  type="text"
-                  value={
-                    formData.contact_name ||
-                    user.first_name + " " + user.last_name
-                  }
-                  onChange={(e) =>
-                    handleInputChange("contact_name", e.target.value)
-                  }
-                  className="w-full p-2 md:p-3  border-gray-200 dark:border-gray-600  text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
-                  // className="w-full p-2 md:p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-white focus:outline-none transition-colors text-sm md:text-base"
-                  required
-                />
-              </div>
+  <label className="block dark:text-white text-gray-600 mb-1 md:mb-2 text-sm md:text-base">
+    Your Name *
+  </label>
+  <input
+    type="text"
+    value={formData.contact_name || getDefaultUserName()}
+    onChange={(e) =>
+      handleInputChange("contact_name", e.target.value)
+    }
+    className="w-full p-2 md:p-3 border-gray-200 dark:border-gray-600 text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
+    required
+  />
+</div>
 
               <div>
                 <label className="block dark:text-white text-gray-600 mb-1 md:mb-2 text-sm md:text-base">
@@ -684,21 +729,19 @@ export default function SellPage() {
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block dark:text-white text-gray-600 mb-1 md:mb-2 text-sm md:text-base">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  value={formData.contact_email || user.email}
-                  onChange={(e) =>
-                    handleInputChange("contact_email", e.target.value)
-                  }
-                  className="w-full p-2 md:p-3  border-gray-200 dark:border-gray-600  text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
-                  // className="w-full p-2 md:p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-white focus:outline-none transition-colors text-sm md:text-base"
-                  placeholder="john@example.com"
-                  required
-                />
-              </div>
+  <label className="block dark:text-white text-gray-600 mb-1 md:mb-2 text-sm md:text-base">
+    Email Address *
+  </label>
+  <input
+    type="email"
+    value={formData.contact_email || getDefaultUserEmail()}
+    onChange={(e) =>
+      handleInputChange("contact_email", e.target.value)
+    }
+    className="w-full p-2 md:p-3 border-gray-200 dark:border-gray-600 text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
+    required
+  />
+</div>
             </div>
 
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 md:p-6 border border-gray-600">
