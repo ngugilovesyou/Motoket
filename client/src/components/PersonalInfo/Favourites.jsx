@@ -23,6 +23,7 @@ import {
   CheckCircle,
   X,
   Maximize2,
+  BatteryCharging
 } from "lucide-react";
 function Favourites() {
     const [favourites, setFavourite]=useState([])
