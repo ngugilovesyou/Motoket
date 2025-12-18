@@ -162,8 +162,8 @@ function Navbar() {
         <div className="py-2">
           <button
             onClick={() => {
-              signOut(); // clear session + reset store
-              navigate("/home"); // redirect after sign out
+              signOut();
+              navigate("/home");
             }}
             className="w-full flex items-center px-6 py-3 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
           >

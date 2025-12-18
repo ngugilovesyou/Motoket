@@ -117,27 +117,8 @@ export default function SellPage() {
     
    
   }
-}, [isAuthenticated, user, formData.contact_name]);
+}, [isAuthenticated, user]);
 
-  // const validateForm = () => {
-  //   const requiredFields = [
-  //     "make",
-  //     "model",
-  //     "year",
-  //     "mileage",
-  //     "condition",
-  //     "region",
-  //     "price",
-  //     "contact_name",
-  //     "contact_phone",
-  //     "contact_email",
-  //   ];
-
-  //   return requiredFields.every((field) => {
-  //     const value = formData[field];
-  //     return value !== "" && value !== null && value !== undefined;
-  //   });
-  // };
 const validateForm = () => {
   const requiredFields = [
     "make",
@@ -151,7 +132,12 @@ const validateForm = () => {
     "contact_phone",
     "contact_email",
   ];
-
+  
+  // Add the return statement that was missing
+  return requiredFields.every((field) => {
+    const value = formData[field];
+    return value !== "" && value !== null && value !== undefined;
+  });
 };
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -737,11 +723,13 @@ const getDefaultUserEmail = () => {
   </label>
   <input
     type="text"
-    value={formData.contact_name || getDefaultUserName()}
+    value={formData.contact_name}
+
     onChange={(e) =>
       handleInputChange("contact_name", e.target.value)
     }
     className="w-full p-2 md:p-3 border-gray-200 dark:border-gray-600 text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
+    placeholder={user ? `${user.first_name} ${user.last_name}` : "Your name"}
     required
   />
 </div>
@@ -769,11 +757,12 @@ const getDefaultUserEmail = () => {
   </label>
   <input
     type="email"
-    value={formData.contact_email || getDefaultUserEmail()}
+    value={formData.contact_email}
     onChange={(e) =>
       handleInputChange("contact_email", e.target.value)
     }
     className="w-full p-2 md:p-3 border-gray-200 dark:border-gray-600 text-gray-900 rounded-lg dark:text-gray-100 bg-white dark:bg-gray-700 placeholder-gray-400 dark:placeholder-gray-500 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-0 transition-all duration-300 text-sm md:text-base"
+    placeholder={user?.email || "your.email@example.com"}
     required
   />
 </div>

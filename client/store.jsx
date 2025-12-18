@@ -8,17 +8,28 @@ const useStore = create(
     (set) => ({
       user: false,
       setUser: (value) => set({ user: value, timestamp: Date.now() }),
+      
       isAuthenticated: false,
-      setIsAuthenticated: (value) =>
-        set({ isAuthenticated: value, timestamp: Date.now() }),
-
-     
+      setIsAuthenticated: (value) => set({ isAuthenticated: value, timestamp: Date.now() }),
+      
+      isAdmin: false,
+      setIsAdmin: (value) => set({ isAdmin: value, timestamp: Date.now() }),
+      
       signOut: () => {
-        sessionStorage.removeItem("auth-storage"); // clear storage
-         sessionStorage.removeItem("auth-storage");
+        // Clear all session storage items
+        sessionStorage.removeItem("auth-storage"); 
         sessionStorage.removeItem("access_token");
         sessionStorage.removeItem("user_id");
-        set({ user: false, isAuthenticated: false }); // reset state
+        sessionStorage.removeItem("first_name");
+        sessionStorage.removeItem("last_name");
+        
+        // Reset all state to initial values
+        set({ 
+          user: false, 
+          isAuthenticated: false,
+          isAdmin: false,
+          timestamp: Date.now() 
+        }); 
       },
     }),
     {
@@ -32,12 +43,12 @@ const useStore = create(
             const now = Date.now();
             if (now - data.timestamp > EXPIRATION_TIME) {
               sessionStorage.removeItem("auth-storage");
-              return { state: { user: false, isAuthenticated: false } };
+              return { state: { user: false, isAuthenticated: false, isAdmin: false } };
             }
           }
           return data;
         } catch {
-          return { state: { user: false, isAuthenticated: false } };
+          return { state: { user: false, isAuthenticated: false, isAdmin: false } };
         }
       },
     }

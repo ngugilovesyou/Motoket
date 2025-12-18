@@ -159,7 +159,7 @@ function Login() {
             {/* Link to Register */}
             <div className="mt-3 text-center text-sm">
               <p className="dark:text-gray-300">
-                Already have an account?{" "}
+              Don't have an account?{" "}
                 <NavLink
                   to="/register"
                   className="text-blue-600 hover:underline dark:text-blue-400"
