@@ -18,6 +18,7 @@ import Navbar from "../Homepage/Navbar";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Authentication/Auth";
 import useStore from "../../../store";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function SellPage() {
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -813,6 +814,7 @@ const getDefaultUserEmail = () => {
   return (
     <>
       <Navbar />
+       <ToastContainer position="top-right" autoClose={3000} />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 text-white pt-16 md:pt-20">
         <div className="container mx-auto px-4 py-6 md:py-8 max-w-4xl">
           <div className="text-center mb-6 md:mb-8">
