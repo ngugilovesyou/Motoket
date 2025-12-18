@@ -2,6 +2,27 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Homepage/Navbar';
 import { Link } from "react-router-dom";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Share2,
+  Phone,
+  Mail,
+  MapPin,
+  Calendar,
+  Gauge,
+  Fuel,
+  Settings,
+  Car,
+  Shield,
+  Award,
+  Eye,
+  Clock,
+  CheckCircle,
+  X,
+  Maximize2,
+} from "lucide-react";
 function Favourites() {
     const [favourites, setFavourite]=useState([])
     const [totalCount, setTotalCount] = useState(0);
