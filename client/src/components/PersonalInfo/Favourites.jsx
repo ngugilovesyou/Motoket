@@ -23,7 +23,18 @@ import {
   CheckCircle,
   X,
   Maximize2,
-  BatteryCharging
+  BatteryCharging,
+  Battery,
+  Calendar,
+  Cog,
+  Eye,
+  Fuel,
+  Gauge,
+  Plug,
+  RefreshCw,
+  Search,
+  Settings,
+  Star,
 } from "lucide-react";
 function Favourites() {
     const [favourites, setFavourite]=useState([])
