@@ -18,7 +18,6 @@ import {
   Cog,
   Eye,
   Fuel,
-  Gauge,
   Plug,
   RefreshCw,
 } from "lucide-react";
