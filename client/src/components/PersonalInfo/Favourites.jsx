@@ -103,7 +103,7 @@ function Favourites() {
   ) : (
     <>
       <div className="py-16">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-24 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
           My Favorites
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
