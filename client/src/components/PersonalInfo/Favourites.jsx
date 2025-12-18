@@ -87,7 +87,8 @@ function Favourites() {
           My Favorites
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
-          {favourites.map((car, index) => (
+          {favourites.map((fav, index) => {
+            const car = fav.vehicle;
             <div
               key={car.id}
               className="group cursor-pointer"
@@ -98,10 +99,7 @@ function Favourites() {
                 {/* Car Image */}
                 <div className="relative h-64 md:h-72 lg:h-80 overflow-hidden">
                   <img
-                    src={
-                      car.images[0]?.image_url || "default-car-image.jpg"
-                    }
-                    // src={car.images.image}
+                    src={car?.images?.[0]?.image_url || "/default-car-image.jpg"}
                     alt={car.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -192,7 +190,7 @@ function Favourites() {
                 </div>
               </div>
             </div>
-          ))}
+})}
         </div>
         {/* Pagination */}
         <div className="mt-16 flex justify-center space-x-2">
