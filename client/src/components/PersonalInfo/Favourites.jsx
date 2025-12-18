@@ -109,7 +109,9 @@ function Favourites() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
           {favourites.map((fav, index) => {
             const car = fav.vehicle;
-            <div
+            if (!car) return null;
+            return(
+              <div
               key={car.id}
               className="group cursor-pointer"
               //   onClick={() => viewCarDetails(car.id)}
@@ -210,6 +212,7 @@ function Favourites() {
                 </div>
               </div>
             </div>
+            )
 })}
         </div>
         {/* Pagination */}
