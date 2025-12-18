@@ -14,6 +14,7 @@ import {
   Gauge,
   Fuel,
   Settings,
+  HybridIcon,
   Car,
   Shield,
   Award,
