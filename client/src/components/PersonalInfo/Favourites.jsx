@@ -20,7 +20,7 @@ function Favourites() {
   }
 
   fetch(
-    `https://motoketapi.onrender.com/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+    `https://motoketapi.onrender.com/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
     {
       method: "GET",
       headers: {
