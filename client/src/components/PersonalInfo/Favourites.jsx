@@ -174,8 +174,8 @@ function Favourites() {
                         <Fuel className="w-4 h-4 text-gray-600" />
                       )}
                       {car.fuel_type === "Hybrid" && (
-                        <HybridIcon className="w-4 h-4 text-green-500" />
-                      )}
+  <BatteryCharging className="w-4 h-4 text-green-500" />
+)}
                       {car.fuel_type === "Plug-in Hybrid" && (
                         <Plug className="w-4 h-4 text-blue-500" />
                       )}
