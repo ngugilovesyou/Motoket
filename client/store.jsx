@@ -15,6 +15,9 @@ const useStore = create(
      
       signOut: () => {
         sessionStorage.removeItem("auth-storage"); // clear storage
+         sessionStorage.removeItem("auth-storage");
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("user_id");
         set({ user: false, isAuthenticated: false }); // reset state
       },
     }),

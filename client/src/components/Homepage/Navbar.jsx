@@ -50,11 +50,11 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { isAuthenticated, user, setIsAuthenticated, setUser } =useContext(AuthContext);
-  const [buyer, setBuyer] = useState(user?.role === "Buyer" ? "Buyer" : "");
+  const [buyer, setBuyer] = useState(false);
   const signOut = useStore((state) => state.signOut);
   
-  useEffect(() => {
-    setBuyer(user?.role === "Buyer" ? "Buyer" : "");
+ useEffect(() => {
+    setBuyer(user?.role === "Buyer");
   }, [user?.role]);
 
   function UserProfileDropdown({ onSelect, userInfo }) {
