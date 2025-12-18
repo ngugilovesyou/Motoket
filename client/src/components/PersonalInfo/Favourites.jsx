@@ -10,22 +10,41 @@ function Favourites() {
     const LISTINGS_PER_PAGE = 15;
     const totalPages = Math.ceil(totalCount / LISTINGS_PER_PAGE);
     useEffect(() => {
-      fetch(
-        `https://motoketapi.onrender.com/api/get-favourite/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}&is_favourite=true`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.vehicles);
-          setFavourite(data.vehicles || []);
-        });
-    }, []);
+  const userId = sessionStorage.getItem("user_id");
+  
+  if (!userId) {
+    console.error("User ID not found in session storage");
+    
+    window.location.href = '/login';
+    return;
+  }
+
+  fetch(
+    `https://motoketapi.onrender.com/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch favourites');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data.results);
+      setFavourite(data.results || []);
+      setTotalCount(data.count || 0);
+    })
+    .catch((error) => {
+      console.error("Error fetching favourites:", error);
+      setFavourite([]);
+    });
+}, [currentPage]);
   return (
     <>
     <Navbar />
