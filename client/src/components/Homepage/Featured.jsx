@@ -25,7 +25,7 @@ function FeaturedCars() {
     // You can implement navigation or state logic here
   };
 useEffect(()=>{
-  fetch("https://motoketapi.onrender.com/api/all_vehicles/?is_featured=true", {
+  fetch("http://127.0.0.1:8000/api/all_vehicles/?is_featured=true", {
     method:'GET',
     headers:{
       'Content-Type': 'application/json',

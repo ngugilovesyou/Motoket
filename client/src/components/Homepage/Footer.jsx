@@ -101,13 +101,13 @@ function Footer() {
   };
 
   return (
-    <footer className="bg-black dark:bg-gray-900 text-white transition-colors duration-300">
+    <footer className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-500 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         {/* Main footer content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Quick Links Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-yellow-400 dark:text-yellow-300 mb-4">
+            <h3 className="text-lg font-semibold text-yellow-400 dark:text-gray-300 mb-4">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -121,7 +121,7 @@ function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-gray-300 hover:text-yellow-400 dark:text-gray-400 dark:hover:text-yellow-300 transition-colors duration-300 text-sm md:text-base"
+                    className="text-gray-800 hover:text-yellow-400 dark:text-gray-800 dark:hover:text-yellow-300 transition-colors duration-300 text-sm md:text-base"
                   >
                     {link.name}
                   </a>
@@ -145,7 +145,7 @@ function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="flex items-center space-x-2 text-gray-300 hover:text-yellow-400 dark:text-gray-400 dark:hover:text-yellow-300 transition-colors duration-300 text-sm md:text-base group"
+                    className="flex items-center space-x-2 text-gray-800 hover:text-yellow-400 dark:text-gray-400 dark:hover:text-yellow-300 transition-colors duration-300 text-sm md:text-base group"
                   >
                     <link.icon className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                     <span>{link.name}</span>
@@ -160,7 +160,7 @@ function Footer() {
             <h3 className="text-lg font-semibold text-yellow-400 dark:text-yellow-300 mb-4">
               Stay Connected
             </h3>
-            <p className="text-gray-300 dark:text-gray-400 text-sm md:text-base leading-relaxed">
+            <p className="text-gray-800 dark:text-gray-400 text-sm md:text-base leading-relaxed">
               Get the latest luxury car listings and exclusive deals delivered
               to your inbox.
             </p>

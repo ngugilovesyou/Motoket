@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 cloudinary = "*"
 django-cloudinary-storage = "*"
+django-cors-headers = "*"
+django = "*"
+djangorestframework = "*"
+
 
 [dev-packages]
 

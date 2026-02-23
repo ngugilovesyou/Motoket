@@ -24,6 +24,8 @@ import {
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../Authentication/Auth";
 import ContactSellerChat from "./ContactSeller";
+import { ToastContainer, toast } from "react-toastify";
+import ShareButton from "./ShareButton";
 export default function VehicleDetails() {
   const { slug } = useParams();
 
@@ -41,7 +43,7 @@ export default function VehicleDetails() {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://motoketapi.onrender.com/api/get_vehicle_details/${slug}/`
+          `http://127.0.0.1:8000/api/get_vehicle_details/${slug}/`
         );
         if (!response.ok) {
           throw new Error("Vehicle not found");
@@ -67,7 +69,7 @@ export default function VehicleDetails() {
     const fetchFavoriteStatus = async () => {
       try {
         const res = await fetch(
-          `https://motoketapi.onrender.com/api/${user.id}/${vehicle.id}/is_favourited/`
+          `http://127.0.0.1:8000/api/${user.id}/${vehicle.id}/is_favourited/`
         );
         const data = await res.json();
         setIsFavorited(data.is_favorited);
@@ -129,7 +131,7 @@ export default function VehicleDetails() {
 
   if (loading) {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div className="h-12 w-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
         <p className="text-sm text-white/70 tracking-wide">Loading...</p>
@@ -141,7 +143,7 @@ export default function VehicleDetails() {
 
 if (error) {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center space-y-4">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10">
           <span className="text-red-500 text-xl">⚠️</span>
@@ -171,7 +173,7 @@ if (error) {
 
   if (!vehicle) {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center space-y-4">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
           <span className="text-xl">🚗</span>
@@ -223,7 +225,7 @@ if (error) {
 
     try {
       const response = await fetch(
-        `https://motoketapi.onrender.com/api/${user.id}/${vehicleId}/favourite/`,
+        `http://127.0.0.1:8000/api/${user.id}/${vehicleId}/favourite/`,
         {
           method: "POST",
           headers: {
@@ -243,12 +245,17 @@ if (error) {
       setIsFavorited(true);
     } catch (err) {
       console.error("Error favoriting vehicle:", err);
-      alert(err.message || "Failed to favorite");
+      toast.error(err.message || "Failed to favorite");
     }
   };
 
+ 
+
+
   return (
-    <div className="min-h-screen bg-black text-white">
+   <>
+   <ToastContainer position="top-right" autoClose={3000} />
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-white">
       {/* Hero Section with Image Gallery */}
       <div className="relative">
         <div className="relative h-96 md:h-[500px] overflow-hidden">
@@ -261,7 +268,7 @@ if (error) {
           )}
 
           {/* Image Navigation */}
-          {/* <button
+          <button
             onClick={prevImage}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 backdrop-blur-sm"
           >
@@ -272,7 +279,7 @@ if (error) {
             className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 backdrop-blur-sm"
           >
             <ChevronRight className="w-6 h-6" />
-          </button> */}
+          </button>
 
           {/* Image Counter */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
@@ -325,13 +332,13 @@ if (error) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Vehicle Header */}
-            <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <div className="bg-white dark:bg-gray-900  text-gray-900 dark:text-gray-100 rounded-2xl p-6 border border-gray-800">
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h1 className="text-3xl font-bold mb-2">
                     {vehicle.year} {vehicle.make} {vehicle.model}
                   </h1>
-                  <div className="flex items-center space-x-4 text-gray-400">
+                  <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-300">
                     <div className="flex items-center space-x-1">
                       <MapPin className="w-4 h-4" />
                       <span>{vehicle.region}</span>
@@ -350,7 +357,7 @@ if (error) {
                 </div>
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => {
+                    onCli1ck={() => {
                       if (!isFavorited) {
                         handleFavourite(vehicle.id);
                       } else {
@@ -373,13 +380,11 @@ if (error) {
                     />
                   </button>
 
-                  <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-colors">
-                    <Share2 className="w-5 h-5" />
-                  </button>
+                  <ShareButton vehicleSlug={vehicle.slug} />
                 </div>
               </div>
 
-              <div className="text-4xl font-bold text-white mb-4">
+              <div className="text-4xl font-bold dark:text-gray-100 text-gray-800 mb-4">
                 {formatPrice(vehicle.price)}
               </div>
 
@@ -396,15 +401,15 @@ if (error) {
             </div>
 
             {/* Specifications */}
-            <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 text-gray-900 rounded-2xl p-6 border border-gray-800">
               <h2 className="text-2xl font-bold mb-6">Specifications</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="text-center">
                   <div className="bg-gray-800 rounded-xl p-4 mb-3">
                     <Gauge className="w-8 h-8 mx-auto text-blue-400" />
                   </div>
-                  <div className="text-gray-400 text-sm">Mileage</div>
-                  <div className="font-semibold">
+                  <div className="text-gray-600 text-sm dark:text-gray-300">Mileage</div>
+                  <div className="font-semibold dark:text-gray-100">
                     {formatMileage(vehicle.mileage)} km
                   </div>
                 </div>
@@ -412,49 +417,49 @@ if (error) {
                   <div className="bg-gray-800 rounded-xl p-4 mb-3">
                     <Fuel className="w-8 h-8 mx-auto text-green-400" />
                   </div>
-                  <div className="text-gray-400 text-sm">Fuel Type</div>
-                  <div className="font-semibold">{vehicle.fuel_type}</div>
+                  <div className="text-gray-600 text-sm dark:text-gray-300">Fuel Type</div>
+                  <div className="font-semibold dark:text-gray-100">{vehicle.fuel_type}</div>
                 </div>
                 <div className="text-center">
                   <div className="bg-gray-800 rounded-xl p-4 mb-3">
                     <Settings className="w-8 h-8 mx-auto text-purple-400" />
                   </div>
-                  <div className="text-gray-400 text-sm">Transmission</div>
-                  <div className="font-semibold">{vehicle.transmission}</div>
+                  <div className="text-gray-600 text-sm dark:text-gray-300">Transmission</div>
+                  <div className="font-semibold dark:text-gray-100">{vehicle.transmission}</div>
                 </div>
                 <div className="text-center">
                   <div className="bg-gray-800 rounded-xl p-4 mb-3">
                     <Car className="w-8 h-8 mx-auto text-yellow-400" />
                   </div>
-                  <div className="text-gray-400 text-sm">Body Type</div>
-                  <div className="font-semibold">{vehicle.body_type}</div>
+                  <div className="text-gray-600 text-sm dark:text-gray-300">Body Type</div>
+                  <div className="font-semibold dark:text-gray-100">{vehicle.body_type}</div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-800">
                 <div>
-                  <span className="text-gray-400">Year:</span>
-                  <span className="ml-2 font-semibold">{vehicle.year}</span>
+                  <span className="text-gray-600 dark:text-gray-300">Year:</span>
+                  <span className="ml-2 font-semibold dark:text-gray-100">{vehicle.year}</span>
                 </div>
                 <div>
-                  <span className="text-gray-400">Color:</span>
-                  <span className="ml-2 font-semibold">{vehicle.color}</span>
+                  <span className="text-gray-600 dark:text-gray-300">Color:</span>
+                  <span className="ml-2 font-semibold dark:text-gray-100">{vehicle.color}</span>
                 </div>
                 <div>
-                  <span className="text-gray-400">Condition:</span>
-                  <span className="ml-2 font-semibold">
+                  <span className="text-gray-600 dark:text-gray-300">Condition:</span>
+                  <span className="ml-2 font-semibold dark:text-gray-100">
                     {vehicle.condition}
                   </span>
                 </div>
                 <div>
-                  <span className="text-gray-400">Location:</span>
-                  <span className="ml-2 font-semibold">{vehicle.region}</span>
+                  <span className="text-gray-600 dark:text-gray-300">Location:</span>
+                  <span className="ml-2 font-semibold dark:text-gray-100">{vehicle.region}</span>
                 </div>
               </div>
             </div>
 
             {/* Features */}
-            <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <div className="bg-white dark:bg-gray-900 dark:text-white text-gray-900 rounded-2xl p-6 border border-gray-800">
               <h2 className="text-2xl font-bold mb-6">Features & Equipment</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {vehicle.features.map((feature, index) => (
@@ -463,16 +468,16 @@ if (error) {
                     className="flex items-center space-x-3 p-3 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors"
                   >
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300">{feature}</span>
+                    <span className="text-gray-100">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Description */}
-            <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <div className="bg-white dark:bg-gray-900 dark:text-white text-gray-900 rounded-2xl p-6 border border-gray-800">
               <h2 className="text-2xl font-bold mb-6">Description</h2>
-              <p className="text-gray-300 leading-relaxed">
+              <p className="text-gray-900 dark:text-gray-100 leading-relaxed">
                 {vehicle.description}
               </p>
             </div>
@@ -534,5 +539,6 @@ if (error) {
         </div>
       )}
     </div>
+   </>
   );
 }

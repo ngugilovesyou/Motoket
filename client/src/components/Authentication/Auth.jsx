@@ -13,7 +13,7 @@
     
 //     if (token && user_id) {
 //       // Fetch user data
-//       fetch(`https://motoketapi.onrender.com/api/${user_id}/get_user`, {
+//       fetch(`http://127.0.0.1:8000/api/${user_id}/get_user`, {
 //         method: "GET",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     // Only fetch if we have credentials and no user data yet
     if (token && user_id && !user) {
       // Fetch user data
-      fetch(`https://motoketapi.onrender.com/api/${user_id}/get_user`, {
+      fetch(`http://127.0.0.1:8000/api/${user_id}/get_user`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

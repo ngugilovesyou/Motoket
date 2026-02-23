@@ -47,7 +47,7 @@ function AdminLogin() {
     }
 
     try {
-      const response = await fetch("https://motoketapi.onrender.com/api/login-admin/", {
+      const response = await fetch("http://127.0.0.1:8000/api/login-admin/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function AdminLogin() {
       // Redirect after short delay
       setTimeout(() => {
         // const redirectTo = location.state?.from || "/";
-        navigate("/admin");
+        navigate("/admin/dashboard");
       }, 1500);
     } catch (error) {
       toast.error(error.message);

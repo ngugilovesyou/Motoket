@@ -13,15 +13,23 @@ import AdminChatDashboard from "./src/components/Admin/AdminChat";
 import AdminLogin from "./src/components/Admin/AdminLogin";
 import Profile from "./src/components/PersonalInfo/Profile";
 import Favourites from "./src/components/PersonalInfo/Favourites";
+import Dashboard from "./src/components/Admin/Dashboard";
+import ErrorPage from "./src/components/Pages/ErrorPage";
+import SellerChats from "./src/components/Chats/SellerChats";
+import BuyerChats from "./src/components/Chats/BuyerChats";
+import Featured from "./src/components/Vehicle/Featured";
+import Garage from "./src/components/Vehicle/Garage";
+import Dealers from "./src/components/Dealers/Dealers";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <Navigate to="/home" />,
   },
+
   {
     path: "/home",
-    element: <App />,
+    element: <AllListings />,
   },
   {
     path: "/register",
@@ -34,10 +42,12 @@ const routes = createBrowserRouter([
   {
     path: "/sell",
     element: <SellPage />,
+    errorElement:<ErrorPage />
   },
   {
-    path: "/listings",
+    path: "/shop/:make?",
     element: <AllListings />,
+    errorElement:<ErrorPage />
   },
   {
     path: "/details/:slug",
@@ -60,20 +70,49 @@ const routes = createBrowserRouter([
     element:<Payment />
   },
   {
-    path:"/admin",
-    element:<AdminChatDashboard />
+    path:"/admin/Dashboard",
+    element:<Dashboard />
   },
   {
     path:"/admin/login",
     element:<AdminLogin />
   },
   {
+    path:"/seller/chats",
+    element:<SellerChats />,
+    errorElement:<ErrorPage />
+  },
+  {
+    path:"/buyer/chats",
+    element:<BuyerChats />,
+    errorElement:<ErrorPage />
+  },
+  {
     path:"/profile",
-    element:<Profile />
+    element:<Profile />,
+    errorElement:<ErrorPage />
   },
   {
     path:"/myfavourites",
-    element:<Favourites />
+    element:<Favourites />,
+    errorElement:<ErrorPage />
+  }
+  ,
+  {
+    path:"/my-garage",
+    element:<Garage />,
+    errorElement:<ErrorPage />
+  }
+  ,
+  {
+    path:"/vehicles/featured",
+    element:<Featured />,
+    errorElement:<ErrorPage />
+  },
+  {
+    path:"/dealers",
+    element:<Dealers />,
+    errorElement:<ErrorPage />
   }
 ]);
 export default routes;

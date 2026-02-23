@@ -39,8 +39,18 @@ function Favourites() {
     return;
   }
 
+  // fetch(
+  //   `http://127.0.0.1:8000/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+  //   {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   }
+  // )
   fetch(
-    `https://motoketapi.onrender.com/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+    `http://127.0.0.1:8000/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
     {
       method: "GET",
       headers: {
@@ -94,7 +104,7 @@ function Favourites() {
         You haven't favorited any vehicles yet. Browse our collection and save your favorites!
       </p>
       <Link
-        to="/listings"
+        to="/shop"
         className="mt-8 px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold rounded-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl"
       >
         Browse Vehicles

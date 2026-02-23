@@ -93,7 +93,7 @@
       
 //       // Make API call to combined endpoint
 //       const response = await fetch(
-//         `https://motoketapi.onrender.com/api/${user.id}/update_profile/`,
+//         `http://127.0.0.1:8000/api/${user.id}/update_profile/`,
 //         {
 //           method: "PATCH",
 //           body: formData,
@@ -539,7 +539,7 @@ const Profile = () => {
       
       // Make API call to combined endpoint
       const response = await fetch(
-        `https://motoketapi.onrender.com/api/${user.id}/update_profile/`,
+        `http://127.0.0.1:8000/api/${user.id}/update_profile/`,
         {
           method: "PATCH",
           body: formData,

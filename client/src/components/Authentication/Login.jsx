@@ -1,176 +1,221 @@
-/* eslint-disable no-unused-vars */
-import { React, useEffect, useState } from "react";
-import {
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
+import { Button } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "./firebase";
 import useStore from "../../../store";
+
 function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { setUser, setIsAuthenticated } = useStore.getState();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const setUser = useStore((s) => s.setUser);
+  const setIsAuthenticated = useStore((s) => s.setIsAuthenticated);
 
-  const handleMouseUpPassword = (event) => {
-    event.preventDefault();
-  };
+  const togglePassword = () => setShowPassword((p) => !p);
 
-  function handleChange(e) {
+  // ---------- CHANGE HANDLER ----------
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
-  async function handleSubmit() {
-    if (formData.email === "" || formData.password === "") {
-      setErrors(true);
-      return;
-    }
+  // ---------- MANUAL LOGIN ----------
+  const handleManualSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.password)
+      return toast.error("Email and password are required");
 
     try {
-      const response = await fetch("https://motoketapi.onrender.com/api/login/", {
+      const res = await fetch("http://127.0.0.1:8000/api/login/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          admin_only: true,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
         credentials: "include",
       });
 
-      const data = await response.json();
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
 
-      if (!response.ok) {
-        const errorMessage =
-          data.error ||
-          data.message ||
-          (data.errors
-            ? Object.values(data.errors).flat().join(", ")
-            : "Login failed");
-        throw new Error(errorMessage);
-      }
-
-      // Success - store user data
-      toast.success("Logging you in");
-
-      // Store the token and user information
       sessionStorage.setItem("access_token", data.token);
       sessionStorage.setItem("user_id", data.user.id);
-       sessionStorage.setItem('first_name', data.user.first_name);
-      sessionStorage.setItem('last_name', data.user.last_name);
+
       setUser(data.user);
       setIsAuthenticated(true);
-      
-      // Redirect after short delay
-      setTimeout(() => {
-        const redirectTo = location.state?.from || "/";
-        navigate(redirectTo, { replace: true });
-      }, 1500);
-    } catch (error) {
-      toast.error(error.message);
-      console.error("Login error:", error);
+
+      toast.success(`Welcome back, ${data.user.first_name}`);
+
+      const redirectTo = location.state?.from || "/";
+      navigate(redirectTo, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
     }
-  }
+  };
+
+  // ---------- GOOGLE LOGIN ----------
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const { email, displayName, uid } = result.user;
+
+      const res = await fetch(
+        `http://127.0.0.1:8000/api/users/check/?email=${email}`
+      );
+      const data = await res.json();
+
+      if (!data.exists)
+        throw new Error("Register first before using Google login");
+
+      if (!data.firebase_uid) {
+        await fetch("http://127.0.0.1:8000/api/users/update-firebase/", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, firebase_uid: uid }),
+        });
+      }
+
+      sessionStorage.setItem("access_token", data.token);
+      sessionStorage.setItem("user_id", data.user.id);
+
+      setUser(data.user);
+      setIsAuthenticated(true);
+
+      toast.success(`Welcome back, ${data.user.first_name}`);
+
+      const redirectTo = location.state?.from || "/";
+      navigate(redirectTo, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   return (
     <>
+      {/* ---------- SEO ---------- */}
+      <Helmet>
+        <title>Login | Motoket</title>
+        <meta name="description" content="Login to your Motoket account to manage vehicles, listings and messages." />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="h-screen w-full bg-gradient-to-br from-blue-100 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black flex justify-center items-center">
-        <div className="p-6 sm:p-10 w-[95%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[40%] bg-white dark:bg-gray-900 rounded-lg shadow-md">
-          <div className="text-center py-6">
-            <h1 className="text-2xl sm:text-4xl font-bold font-sans bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent dark:from-blue-300 dark:to-indigo-400">
-              Welcome Back!!
+
+      <main className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
+
+        <section
+          aria-label="Login Form"
+          className="w-full max-w-md rounded-2xl shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-8 transition-all"
+        >
+
+          {/* HEADER */}
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent">
+              Welcome Back
             </h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
+              Login to continue
+            </p>
           </div>
 
-          <div className="flex flex-col gap-4">
-            {/* Email Input */}
+          {/* FORM */}
+          <form onSubmit={handleManualSubmit} className="space-y-4">
+
+            {/* EMAIL */}
             <div>
+              <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Email
+              </label>
               <input
-                id="email"
-                name="email"
+                aria-label="Email Address"
                 type="email"
-                placeholder="Email Address"
+                name="email"
+                required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                className="mt-1 w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-yellow-500 dark:bg-gray-900 dark:text-white outline-none"
               />
             </div>
 
-            <div className="relative">
-              <input
-                id="password"
-                name="password"
-                placeholder="Password"
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
-              />
-              <button
-                type="button"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                onMouseUp={handleMouseUpPassword}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </button>
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password}</p>
-              )}
-            </div>
+            {/* PASSWORD */}
+            <div>
+              <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Password
+              </label>
 
-            {/* Forgotten Password */}
-            <span className="text-sm text-blue-600 cursor-pointer hover:underline dark:text-blue-400">
-              Forgotten password?
-            </span>
+              <div className="relative mt-1">
+                <input
+                  aria-label="Password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-yellow-500 dark:bg-gray-900 dark:text-white outline-none"
+                />
 
-            {/* Submit Button */}
-            <Button
-              onClick={handleSubmit}
-              className="w-full bg-blue-300 p-4 dark:text-white"
-            >
-              Submit
-            </Button>
-
-            {/* Link to Register */}
-            <div className="mt-3 text-center text-sm">
-              <p className="dark:text-gray-300">
-              Don't have an account?{" "}
-                <NavLink
-                  to="/register"
-                  className="text-blue-600 hover:underline dark:text-blue-400"
+                <button
+                  type="button"
+                  onClick={togglePassword}
+                  aria-label="Toggle password visibility"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"
                 >
-                  Register
-                </NavLink>
-              </p>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </button>
+              </div>
             </div>
+
+            {/* LOGIN BUTTON */}
+            <button
+              type="submit"
+              className="w-full py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-yellow-500 to-yellow-600 hover:opacity-90 transition"
+            >
+              Login
+            </button>
+          </form>
+
+          {/* REGISTER */}
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+            Don’t have an account?{" "}
+            <NavLink
+              to="/register"
+              className="font-semibold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent hover:underline"
+            >
+              Register
+            </NavLink>
+          </p>
+
+          {/* DIVIDER */}
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+            <span className="text-gray-400 text-sm">OR</span>
+            <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
           </div>
-        </div>
-      </div>
+
+          {/* GOOGLE LOGIN */}
+          <Button
+            onClick={handleGoogleLogin}
+            variant="contained"
+            fullWidth
+            sx={{
+              background: "linear-gradient(to right,#f59e0b,#d97706)",
+              fontWeight: "bold",
+              borderRadius: "12px",
+              ":hover": { opacity: 0.9 },
+            }}
+          >
+            Continue with Google
+          </Button>
+
+        </section>
+      </main>
     </>
   );
 }

@@ -1,21 +1,18 @@
-"""
-ASGI config for motoket project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
-"""
-
 import os
 
-
-from django.core.asgi import get_asgi_application
-
+# ✅ Must be first
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'motoket.settings')
 
-django_asgi_app = get_asgi_application()
+from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
 
-import socketio
-from api.sockets import sio
-application = socketio.ASGIApp(sio, django_asgi_app)
+# Import only after settings are set
+from api.routing import websocket_urlpatterns
+from api.middleware import AsyncJWTAuthMiddleware
+
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": AsyncJWTAuthMiddleware(
+        URLRouter(websocket_urlpatterns)
+    ),
+})

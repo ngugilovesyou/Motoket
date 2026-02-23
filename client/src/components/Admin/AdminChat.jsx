@@ -21,7 +21,7 @@ export default function AdminChatDashboard() {
     }
 
     axios
-      .get(`https://motoketapi.onrender.com/api/${user.id}/admin_chats/`, {
+      .get(`http://127.0.0.1:8000/api/${user.id}/admin_chats/`, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       })
@@ -35,7 +35,7 @@ export default function AdminChatDashboard() {
     if (selectedChat) {
       axios
         .get(
-          `https://motoketapi.onrender.com/api/chat_messages/${selectedChat.short_id}/`,
+          `http://127.0.0.1:8000/api/chat_messages/${selectedChat.short_id}/`,
           {
             withCredentials: true,
           }
@@ -53,7 +53,7 @@ export default function AdminChatDashboard() {
 
     axios
       .post(
-        "https://motoketapi.onrender.com/api/send_message/",
+        "http://127.0.0.1:8000/api/send_message/",
         {
           sender_id: user.id,
           chat_id: selectedChat.short_id,
@@ -92,7 +92,7 @@ export default function AdminChatDashboard() {
           </button>
         </div>
 
-        <div className="space-y-2 overflow-y-auto max-h-[80vh]">
+        {/* <div className="space-y-2 overflow-y-auto max-h-[80vh]">
           {chats.map((chat) => (
             <button
               key={chat.short_id}
@@ -106,7 +106,7 @@ export default function AdminChatDashboard() {
               {chat.initiator || "User"}-{chat.vehicle.slug}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
 
       {/* Chat Window */}

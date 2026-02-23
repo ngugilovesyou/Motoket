@@ -49,8 +49,10 @@ def post_vehicle(request, user_id):
             contact_name=request.data.get('contact_name'),
             contact_phone=request.data.get('contact_phone'),
             contact_email=request.data.get('contact_email'),
-            user=user
+            user=user,
+            is_featured=request.data.get('is_featured', False)
         )
+        print("Vehicle data received:", request.data)
         
         vehicle.save()
 
