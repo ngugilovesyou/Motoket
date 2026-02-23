@@ -102,7 +102,7 @@ const EmptyState = ({ onReset, hasActiveFilters }) => (
         </button>
       )}
       <Link
-        to="/vehicles"
+        to="/shop"
         className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 text-center"
       >
         Browse All Listings
