@@ -41,11 +41,11 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
   // 2️⃣ Connect WebSocket
   // =========================
   useEffect(() => {
-    console.log("Token being sent:", token);
+    // console.log("Token being sent:", token);
     if (!chatId || !token) return;
 
-    const ws = new WebSocket(
-  `ws://127.0.0.1:8000/ws/chat/${chatId}/?token=${encodeURIComponent(token)}`
+  const ws = new WebSocket(
+  `wss://motoketapi.onrender.com/ws/chat/${chatId}/?token=${encodeURIComponent(token)}`
 );
 
 
