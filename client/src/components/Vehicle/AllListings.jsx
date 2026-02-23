@@ -81,7 +81,7 @@
 
 //     try {
 //       const res = await fetch(
-//         `http://127.0.0.1:8000/api/all_vehicles/?${params.toString()}`
+//         `https://motoketapi.onrender.com/api/all_vehicles/?${params.toString()}`
 //       )
 //       const data = await res.json()
 //       setListings(data.vehicles || [])
@@ -579,7 +579,7 @@ function AllListings() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/all_vehicles/?${params.toString()}`
+        `https://motoketapi.onrender.com/api/all_vehicles/?${params.toString()}`
       );
       
       if (!res.ok) throw new Error("Failed to fetch listings");
@@ -655,7 +655,7 @@ function AllListings() {
   const fetchSaved = async () => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/${user.id}/user-favourite/`
+        `https://motoketapi.onrender.com/api/${user.id}/user-favourite/`
       );
 
       const data = await res.json();
@@ -696,7 +696,7 @@ function AllListings() {
     if (isCurrentlySaved) {
       // Call DELETE endpoint to unfavourite
       const res = await fetch(
-        `http://127.0.0.1:8000/api/${userId}/${listingId}/unfavourite/`,
+        `https://motoketapi.onrender.com/api/${userId}/${listingId}/unfavourite/`,
         { method: 'DELETE' }
       );
 
@@ -706,7 +706,7 @@ function AllListings() {
     } else {
       // Call POST endpoint to favourite
       const res = await fetch(
-        `http://127.0.0.1:8000/api/${userId}/${listingId}/favourite/`,
+        `https://motoketapi.onrender.com/api/${userId}/${listingId}/favourite/`,
         { method: 'POST' }
       );
 

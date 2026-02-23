@@ -173,7 +173,7 @@ function Featured() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/featured_vehicles/?${params.toString()}`
+        `https://motoketapi.onrender.com/api/featured_vehicles/?${params.toString()}`
       );
       
       if (!res.ok) throw new Error("Failed to fetch listings");
@@ -246,7 +246,7 @@ function Featured() {
   useEffect(() => {
   const fetchSaved = async () => {
     if (!user) return;
-    const res = await fetch(`http://127.0.0.1:8000/api/${user}/favourites/`);
+    const res = await fetch(`https://motoketapi.onrender.com/api/${user}/favourites/`);
     const data = await res.json();
     setSavedListings(new Set(data.map(v => v.vehicle_id)));
   };
@@ -267,7 +267,7 @@ function Featured() {
     if (isCurrentlySaved) {
       // Call DELETE endpoint to unfavourite
       const res = await fetch(
-        `http://127.0.0.1:8000/api/${user}/${listingId}/unfavourite/`,
+        `https://motoketapi.onrender.com/api/${user}/${listingId}/unfavourite/`,
         { method: 'DELETE' }
       );
 
@@ -277,7 +277,7 @@ function Featured() {
     } else {
       // Call POST endpoint to favourite
       const res = await fetch(
-        `http://127.0.0.1:8000/api/${user}/${listingId}/favourite/`,
+        `https://motoketapi.onrender.com/api/${user}/${listingId}/favourite/`,
         { method: 'POST' }
       );
 

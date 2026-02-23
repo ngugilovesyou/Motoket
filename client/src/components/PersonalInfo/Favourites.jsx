@@ -40,7 +40,7 @@ function Favourites() {
   }
 
   // fetch(
-  //   `http://127.0.0.1:8000/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+  //   `https://motoketapi.onrender.com/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
   //   {
   //     method: "GET",
   //     headers: {
@@ -50,7 +50,7 @@ function Favourites() {
   //   }
   // )
   fetch(
-    `http://127.0.0.1:8000/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+    `https://motoketapi.onrender.com/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
     {
       method: "GET",
       headers: {

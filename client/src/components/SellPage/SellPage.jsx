@@ -288,7 +288,7 @@
 //       });
 
 //       const response = await axios.post(
-//         `http://127.0.0.1:8000/api/${currentUserId}/post_vehicle/`,
+//         `https://motoketapi.onrender.com/api/${currentUserId}/post_vehicle/`,
 //         formDataToSend,
 //         {
 //           withCredentials: true,
@@ -1155,7 +1155,7 @@ const getDefaultUserEmail = () => {
         }
       });
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/${currentUserId}/post_vehicle/`,
+        `https://motoketapi.onrender.com/api/${currentUserId}/post_vehicle/`,
         formDataToSend,
         {
           withCredentials: true,

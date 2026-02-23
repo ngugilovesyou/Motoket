@@ -34,7 +34,7 @@ function Login() {
       return toast.error("Email and password are required");
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/login/", {
+      const res = await fetch("https://motoketapi.onrender.com/api/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -67,7 +67,7 @@ function Login() {
       const { email, displayName, uid } = result.user;
 
       const res = await fetch(
-        `http://127.0.0.1:8000/api/users/check/?email=${email}`
+        `https://motoketapi.onrender.com/api/users/check/?email=${email}`
       );
       const data = await res.json();
 
@@ -75,7 +75,7 @@ function Login() {
         throw new Error("Register first before using Google login");
 
       if (!data.firebase_uid) {
-        await fetch("http://127.0.0.1:8000/api/users/update-firebase/", {
+        await fetch("https://motoketapi.onrender.com/api/users/update-firebase/", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, firebase_uid: uid }),

@@ -163,7 +163,7 @@ function Dealers() {
   useEffect(() => {
     const fetchDealers = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/dealers/", {
+        const res = await fetch("https://motoketapi.onrender.com/api/dealers/", {
           credentials: "include",
         });
         const data = await res.json();

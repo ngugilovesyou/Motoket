@@ -21,7 +21,7 @@ export default function AdminChatDashboard() {
     }
 
     axios
-      .get(`http://127.0.0.1:8000/api/${user.id}/admin_chats/`, {
+      .get(`https://motoketapi.onrender.com/api/${user.id}/admin_chats/`, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       })
@@ -35,7 +35,7 @@ export default function AdminChatDashboard() {
     if (selectedChat) {
       axios
         .get(
-          `http://127.0.0.1:8000/api/chat_messages/${selectedChat.short_id}/`,
+          `https://motoketapi.onrender.com/api/chat_messages/${selectedChat.short_id}/`,
           {
             withCredentials: true,
           }
@@ -53,7 +53,7 @@ export default function AdminChatDashboard() {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/send_message/",
+        "https://motoketapi.onrender.com/api/send_message/",
         {
           sender_id: user.id,
           chat_id: selectedChat.short_id,

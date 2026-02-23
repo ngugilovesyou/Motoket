@@ -18,7 +18,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/create_chat/",
+        "https://motoketapi.onrender.com/api/create_chat/",
         { buyer_id: currentUser.id, vehicle_id: vehicle.id },
         { withCredentials: true }
       )

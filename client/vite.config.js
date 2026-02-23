@@ -8,4 +8,4 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
 })
 
-// http://127.0.0.1:8000
+// https://motoketapi.onrender.com
