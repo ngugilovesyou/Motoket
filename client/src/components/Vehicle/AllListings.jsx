@@ -863,7 +863,7 @@ function AllListings() {
               )}
             </h1>
             <p className="text-gray-500 dark:text-gray-400 text-lg">
-              {totalCount > 0 ? `${totalCount.toLocaleString()} vehicles available` : "Find your next ride below"}
+              Find your next ride
             </p>
           </div>
 
