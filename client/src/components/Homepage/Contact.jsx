@@ -59,19 +59,8 @@ export default function ContactUs() {
               {
                 icon: <Phone className="h-6 w-6 text-yellow-500" />,
                 title: "Call Us",
-                info: "+1 (555) 123-4567",
-              },
-              {
-                icon: <MapPin className="h-6 w-6 text-yellow-500" />,
-                title: "Visit Us",
-                info: (
-                  <>
-                    123 Auto Street
-                    <br />
-                    Motor City, MC 12345
-                  </>
-                ),
-              },
+                info: "+254 758750963",
+              }
             ].map(({ icon, title, info }, idx) => (
               <div
                 key={idx}
@@ -86,22 +75,6 @@ export default function ContactUs() {
                 </div>
               </div>
             ))}
-
-            <div className="bg-gray-900 rounded-2xl p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold mb-4">Business Hours</h3>
-              <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                {[
-                  ["Monday - Friday", "9:00 AM - 6:00 PM"],
-                  ["Saturday", "10:00 AM - 4:00 PM"],
-                  ["Sunday", "Closed"],
-                ].map(([day, hours], idx) => (
-                  <li key={idx} className="flex justify-between">
-                    <span>{day}</span>
-                    <span>{hours}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
 
           {/* Contact Form */}
