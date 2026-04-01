@@ -113,6 +113,10 @@ const routes = createBrowserRouter([
     path:"/dealers",
     element:<Dealers />,
     errorElement:<ErrorPage />
+  },
+  {
+    path:"*",
+    errorElement:<ErrorPage />
   }
 ]);
 export default routes;
