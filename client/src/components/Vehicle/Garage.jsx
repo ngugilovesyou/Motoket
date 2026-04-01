@@ -46,7 +46,7 @@ function Garage() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:8000/api/${user.id}/user_vehicles/`
+        `https://motoketapi.onrender.com/api/${user.id}/user_vehicles/`
       );
       setVehicles(response.data);
       setError(null);
@@ -72,7 +72,7 @@ function Garage() {
   const handleUpdateVehicle = async () => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/${user.id}/${editingVehicle.id}/update/`,
+        `https://motoketapi.onrender.com/api/${user.id}/${editingVehicle.id}/update/`,
         editForm
       );
       setUpdateSuccess(true);
@@ -93,7 +93,7 @@ function Garage() {
     ) {
       try {
         await axios.delete(
-          `http://localhost:8000/api/${user.id}/${vehicleId}/delete-vehicle/`
+          `https://motoketapi.onrender.com/api/${user.id}/${vehicleId}/delete-vehicle/`
         );
         fetchVehicles();
       } catch (err) {
@@ -106,7 +106,7 @@ function Garage() {
   const toggleFeatured = async (vehicle) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/vehicles/${user.id}/${vehicle.id}/`,
+        `https://motoketapi.onrender.com/api/vehicles/${user.id}/${vehicle.id}/`,
         {
           is_featured: !vehicle.is_featured,
         }
