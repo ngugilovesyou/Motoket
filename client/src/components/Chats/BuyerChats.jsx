@@ -11,11 +11,13 @@ const BuyerChats = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   const messagesEndRef = useRef(null);
   const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     if (!user?.id) return;
     axios
-      .get("https://motoketapi.onrender.com/api/seller_chats/", {
+      .get(`${LOCAL_API_URL}/seller_chats/`, {
         params: { user_id: user.id },
         withCredentials: true,
       })
@@ -28,7 +30,7 @@ const BuyerChats = () => {
   useEffect(() => {
     if (!selectedChat) return;
     axios
-      .get(`https://motoketapi.onrender.com/api/chat_messages/${selectedChat.short_id}/`, {
+      .get(`${LOCAL_API_URL}/chat_messages/${selectedChat.short_id}/`, {
         withCredentials: true,
       })
       .then((res) => setMessages(res.data.data || []))
@@ -43,7 +45,7 @@ const BuyerChats = () => {
     if (!input.trim() || !selectedChat) return;
     axios
       .post(
-        "https://motoketapi.onrender.com/api/send_message/",
+        `${LOCAL_API_URL}/send_message/`,
         { chat_id: selectedChat.short_id, text: input, sender_id: user.id },
         { withCredentials: true }
       )

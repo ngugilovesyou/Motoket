@@ -19,13 +19,15 @@ import { Link, useNavigate } from "react-router-dom";
 function FeaturedCars() {
   const [featuredCars, setFeaturedCars] = useState([]);
   const navigate=useNavigate()
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
   const viewCarDetails = (carId) => {
     console.log(`Viewing details for: ${carId}`);
     // You can implement navigation or state logic here
   };
 useEffect(()=>{
-  fetch("https://motoketapi.onrender.com/api/all_vehicles/?is_featured=true", {
+  fetch(`${LOCAL_API_URL}/all_vehicles/?is_featured=true`, {
     method:'GET',
     headers:{
       'Content-Type': 'application/json',
@@ -38,81 +40,7 @@ useEffect(()=>{
     setFeaturedCars(data.vehicles || [])
   })
 },[])
-  // const cars = [
-  //   {
-  //     id: "bmw-x5",
-  //     title: "BMW X5 M Competition",
-  //     year: "2024",
-  //     mileage: "5,200 miles",
-  //     drivetrain: "AWD",
-  //     price: "$89,500",
-  //     image:
-  //       "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  //     badge: "NEW",
-  //     rating: 4.9,
-  //   },
-  //   {
-  //     id: "mercedes-glc",
-  //     title: "Mercedes-Benz GLC 43 AMG",
-  //     year: "2023",
-  //     mileage: "12,800 miles",
-  //     drivetrain: "4MATIC",
-  //     price: "$67,900",
-  //     image:
-  //       "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  //     badge: "POPULAR",
-  //     rating: 4.8,
-  //   },
-  //   {
-  //     id: "audi-q8",
-  //     title: "Audi Q8 Prestige",
-  //     year: "2024",
-  //     mileage: "3,500 miles",
-  //     drivetrain: "Quattro",
-  //     price: "$78,200",
-  //     image:
-  //       "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  //     badge: "FEATURED",
-  //     rating: 4.9,
-  //   },
-  //   {
-  //     id: "porsche-cayenne",
-  //     title: "Porsche Cayenne Turbo",
-  //     year: "2023",
-  //     mileage: "8,900 miles",
-  //     drivetrain: "AWD",
-  //     price: "$125,000",
-  //     image:
-  //       "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  //     badge: "PREMIUM",
-  //     rating: 5.0,
-  //   },
-  //   {
-  //     id: "lexus-gx",
-  //     title: "Lexus GX 460 Luxury",
-  //     year: "2024",
-  //     mileage: "2,100 miles",
-  //     drivetrain: "4WD",
-  //     price: "$71,800",
-  //     image:
-  //       "https://images.unsplash.com/photo-1563720360172-67b8f3dce741?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  //     badge: "LOW MILES",
-  //     rating: 4.7,
-  //   },
-  //   {
-  //     id: "range-rover",
-  //     title: "Range Rover Sport HSE",
-  //     year: "2023",
-  //     mileage: "15,600 miles",
-  //     drivetrain: "AWD",
-  //     price: "$94,500",
-  //     image:
-  //       "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  //     is_featured: true,
-  //     rating: 4.6,
-  //   },
-  // ];
-
+  
   const getBadge = (car) => {
     if (car.is_featured) return "FEATURED";
     const currentYear = new Date().getFullYear();

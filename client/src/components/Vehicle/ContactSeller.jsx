@@ -10,15 +10,21 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
   const token=sessionStorage.getItem("access_token");
+
+
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
+
   // =========================
   // 1️⃣ Create or get the chat
   // =========================
   useEffect(() => {
     if (!currentUser?.id) return;
+    console.log("Creating/getting chat for buyer_id:", currentUser.id, "and vehicle_id:", vehicle.id);
 
     axios
       .post(
-        "https://motoketapi.onrender.com/api/create_chat/",
+        `${LOCAL_API_URL}/create_chat/`,
         { buyer_id: currentUser.id, vehicle_id: vehicle.id },
         { withCredentials: true }
       )
@@ -37,18 +43,20 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
       });
   }, [currentUser?.id]);
 
-  // =========================
-  // 2️⃣ Connect WebSocket
-  // =========================
+  
+  // Connect WebSocket
+
   useEffect(() => {
     // console.log("Token being sent:", token);
     if (!chatId || !token) return;
 
-  const ws = new WebSocket(
-  `wss://motoketapi.onrender.com/ws/chat/${chatId}/?token=${encodeURIComponent(token)}`
+//   const ws = new WebSocket(
+//   `wss://motoketapi.onrender.com/ws/chat/${chatId}/?token=${encodeURIComponent(token)}`
+// );
+
+const ws = new WebSocket(
+  `ws://127.0.0.1:8000/ws/chat/${chatId}/?token=${encodeURIComponent(token)}`
 );
-
-
     ws.onopen = () => {
       console.log("WebSocket connected!");
       setConnected(true);
@@ -106,7 +114,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
 
       {/* Seller info */}
       <div className="flex items-center space-x-3 mb-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+        <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
           S
         </div>
         <div>

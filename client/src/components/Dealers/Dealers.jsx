@@ -159,11 +159,13 @@ function Dealers() {
   const [dealers, setDealers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     const fetchDealers = async () => {
       try {
-        const res = await fetch("https://motoketapi.onrender.com/api/dealers/", {
+        const res = await fetch(`${LOCAL_API_URL}/dealers/`, {
           credentials: "include",
         });
         const data = await res.json();

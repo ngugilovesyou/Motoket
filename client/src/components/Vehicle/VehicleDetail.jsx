@@ -37,13 +37,15 @@ export default function VehicleDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user, isAuthenticated } = useContext(AuthContext);
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     const fetchVehicleDetails = async () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://motoketapi.onrender.com/api/get_vehicle_details/${slug}/`
+          `${LOCAL_API_URL}/get_vehicle_details/${slug}/`
         );
         if (!response.ok) {
           throw new Error("Vehicle not found");
@@ -69,7 +71,7 @@ export default function VehicleDetails() {
     const fetchFavoriteStatus = async () => {
       try {
         const res = await fetch(
-          `https://motoketapi.onrender.com/api/${user.id}/${vehicle.id}/is_favourited/`
+          `${LOCAL_API_URL}/${user.id}/${vehicle.id}/is_favourited/`
         );
         const data = await res.json();
         setIsFavorited(data.is_favorited);
@@ -357,7 +359,7 @@ if (error) {
                 </div>
                 <div className="flex space-x-2">
                   <button
-                    onCli1ck={() => {
+                    onClick={() => {
                       if (!isFavorited) {
                         handleFavourite(vehicle.id);
                       } else {

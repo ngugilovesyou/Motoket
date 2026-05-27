@@ -14,6 +14,9 @@ export default function AdminChatDashboard() {
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
+
   useEffect(() => {
     if (!isAuthenticated || !user) {
       navigate("/admin/login");
@@ -21,7 +24,7 @@ export default function AdminChatDashboard() {
     }
 
     axios
-      .get(`https://motoketapi.onrender.com/api/${user.id}/admin_chats/`, {
+      .get(`${LOCAL_API_URL}/${user.id}/admin_chats/`, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       })
@@ -35,7 +38,7 @@ export default function AdminChatDashboard() {
     if (selectedChat) {
       axios
         .get(
-          `https://motoketapi.onrender.com/api/chat_messages/${selectedChat.short_id}/`,
+          `${LOCAL_API_URL}/chat_messages/${selectedChat.short_id}/`,
           {
             withCredentials: true,
           }
@@ -53,7 +56,7 @@ export default function AdminChatDashboard() {
 
     axios
       .post(
-        "https://motoketapi.onrender.com/api/send_message/",
+        `${LOCAL_API_URL}/send_message/`,
         {
           sender_id: user.id,
           chat_id: selectedChat.short_id,

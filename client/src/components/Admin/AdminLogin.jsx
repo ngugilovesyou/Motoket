@@ -15,6 +15,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../Authentication/Auth";
+
+
 function AdminLogin() {
   const [formData, setFormData] = useState({
     email: "",
@@ -25,6 +27,8 @@ function AdminLogin() {
   const { setUser, setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -47,7 +51,7 @@ function AdminLogin() {
     }
 
     try {
-      const response = await fetch("https://motoketapi.onrender.com/api/login-admin/", {
+      const response = await fetch(`${LOCAL_API_URL}/login-admin/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -26,6 +26,8 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
   // ---------- INPUT CHANGE ----------
   const handleChange = useCallback((e) => {
@@ -92,7 +94,7 @@ function Register() {
     if (!formData.role) return toast.error("Select role");
 
     try {
-      const res = await fetch("https://motoketapi.onrender.com/api/register/", {
+      const res = await fetch(`${LOCAL_API_URL}/register/`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(formData),
@@ -102,7 +104,7 @@ function Register() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed");
 
-      toast.success("Account created successfully 🎉");
+      toast.success("Account created successfully");
       navigate("/login");
     } catch (err) {
       toast.error(err.message);

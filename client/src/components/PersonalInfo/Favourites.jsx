@@ -26,6 +26,8 @@ function Favourites() {
     const [favourites, setFavourite]=useState([])
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const API_BASE_URL = "https://motoketapi.onrender.com/api";
+  const LOCAL_API_URL = "http://127.0.0.1:8000/api";
 
     const LISTINGS_PER_PAGE = 15;
     const totalPages = Math.ceil(totalCount / LISTINGS_PER_PAGE);
@@ -50,7 +52,7 @@ function Favourites() {
   //   }
   // )
   fetch(
-    `https://motoketapi.onrender.com/api/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+    `${LOCAL_API_URL}/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
     {
       method: "GET",
       headers: {
