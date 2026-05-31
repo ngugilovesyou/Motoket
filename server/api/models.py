@@ -18,9 +18,11 @@ class User(models.Model):
     email = models.EmailField(max_length=100, unique=True, null=False, default=None)
     firebase_uid = models.CharField(max_length=128, unique=True, null=True,  blank=True)
     role=models.CharField(null=False, default='Buyer', max_length=6)
+    is_admin = models.BooleanField(default=False)
     password = models.CharField(max_length=100, null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
+
     
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -33,7 +35,7 @@ class User(models.Model):
     
 class Vehicle(models.Model):
     
-    # Choices for consistent data
+    
     FUEL_TYPE_CHOICES = [
         ('Gasoline', 'Gasoline'),
         ('Diesel', 'Diesel'),
@@ -66,7 +68,7 @@ class Vehicle(models.Model):
         ('Minivan', 'Minivan'),
     ]
     
-    # Primary fields
+    
     id = models.AutoField(primary_key=True)
     make = models.CharField(max_length=100, null=False, db_index=True)
     model = models.CharField(max_length=100, null=False, db_index=True)
@@ -209,27 +211,21 @@ class Vehicle(models.Model):
     
     def save(self, *args, **kwargs):
         is_new = self.pk is None
-
         if is_new:
             super().save(*args, **kwargs)  
-
         if not self.slug:
-            self.slug = slugify(
-                f"{self.year}-{self.make}-{self.model}-"
-                f"{self.color or 'vehicle'}-{self.pk}"
-            )
-
+            self.slug = slugify(f"{self.year}-{self.make}-{self.model}-{self.color or 'vehicle'}-{self.pk}")
         if not self.meta_title:
             self.meta_title = f"{self.year} {self.make} {self.model} for Sale"
-
         if not self.meta_description:
-            self.meta_description = (
-                f"{self.year} {self.make} {self.model} - {self.condition or 'Vehicle'} "
-                f"in {self.region}. {self.fuel_type} engine, {self.transmission} transmission. "
-                f"Price: KES {self.price}"
-            )[:300]
-
-        super().save(*args, **kwargs)
+            self.meta_description = f"{self.year} {self.make} {self.model} for sale in {self.region}. {self.description}"[:300]
+        if is_new:
+            Vehicle.objects.filter(pk=self.pk).update(
+                slug=self.slug, meta_title=self.meta_title, meta_description=self.meta_description
+            )
+            self.refresh_from_db()
+        else:
+            super().save(*args, **kwargs)
 
     
     def increment_view_count(self):

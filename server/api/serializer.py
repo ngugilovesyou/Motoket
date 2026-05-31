@@ -128,10 +128,9 @@ class VehicleSerializer(serializers.ModelSerializer):
         ]
     
     def get_user_name(self, obj):
-        """Get the seller's name (can be customized for privacy)"""
         if obj.contact_name:
             return obj.contact_name
-        return obj.user.get_full_name() or obj.user.username    
+        return f"{obj.user.first_name} {obj.user.last_name}".strip()   
     
     def get_images(self, obj):
         # Get the transformation type from context (default to 'main')

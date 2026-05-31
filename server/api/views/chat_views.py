@@ -1,3 +1,5 @@
+# server/api/views/chat_views.py
+
 import traceback
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
