@@ -52,7 +52,7 @@ function Favourites() {
   //   }
   // )
   fetch(
-    `${LOCAL_API_URL}/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
+    `${API_BASE_URL}/user-favourite/${userId}/?page=${currentPage}&limit=${LISTINGS_PER_PAGE}`,
     {
       method: "GET",
       headers: {

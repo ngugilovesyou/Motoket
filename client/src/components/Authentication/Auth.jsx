@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     // Only fetch if we have credentials and no user data yet
     if (token && user_id && !user) {
       // Fetch user data
-      fetch(`${LOCAL_API_URL}/${user_id}/get_user`, {
+      fetch(`${API_BASE_URL}/${user_id}/get_user`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

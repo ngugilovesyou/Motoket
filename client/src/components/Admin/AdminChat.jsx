@@ -24,7 +24,7 @@ export default function AdminChatDashboard() {
     }
 
     axios
-      .get(`${LOCAL_API_URL}/${user.id}/admin_chats/`, {
+      .get(`${API_BASE_URL}/${user.id}/admin_chats/`, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       })
@@ -38,7 +38,7 @@ export default function AdminChatDashboard() {
     if (selectedChat) {
       axios
         .get(
-          `${LOCAL_API_URL}/chat_messages/${selectedChat.short_id}/`,
+          `${API_BASE_URL}/chat_messages/${selectedChat.short_id}/`,
           {
             withCredentials: true,
           }
@@ -56,7 +56,7 @@ export default function AdminChatDashboard() {
 
     axios
       .post(
-        `${LOCAL_API_URL}/send_message/`,
+        `${API_BASE_URL}/send_message/`,
         {
           sender_id: user.id,
           chat_id: selectedChat.short_id,

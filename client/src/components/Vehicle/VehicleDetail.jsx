@@ -45,7 +45,7 @@ export default function VehicleDetails() {
       try {
         setLoading(true);
         const response = await fetch(
-          `${LOCAL_API_URL}/get_vehicle_details/${slug}/`
+          `${API_BASE_URL}/get_vehicle_details/${slug}/`
         );
         if (!response.ok) {
           throw new Error("Vehicle not found");
@@ -71,7 +71,7 @@ export default function VehicleDetails() {
     const fetchFavoriteStatus = async () => {
       try {
         const res = await fetch(
-          `${LOCAL_API_URL}/${user.id}/${vehicle.id}/is_favourited/`
+          `${API_BASE_URL}/${user.id}/${vehicle.id}/is_favourited/`
         );
         const data = await res.json();
         setIsFavorited(data.is_favorited);

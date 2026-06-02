@@ -24,7 +24,7 @@ const ContactSellerChat = ({ vehicle, currentUser }) => {
 
     axios
       .post(
-        `${LOCAL_API_URL}/create_chat/`,
+        `${API_BASE_URL}/create_chat/`,
         { buyer_id: currentUser.id, vehicle_id: vehicle.id },
         { withCredentials: true }
       )

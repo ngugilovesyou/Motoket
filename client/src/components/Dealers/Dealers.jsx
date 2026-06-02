@@ -165,7 +165,7 @@ function Dealers() {
   useEffect(() => {
     const fetchDealers = async () => {
       try {
-        const res = await fetch(`${LOCAL_API_URL}/dealers/`, {
+        const res = await fetch(`${API_BASE_URL}/dealers/`, {
           credentials: "include",
         });
         const data = await res.json();

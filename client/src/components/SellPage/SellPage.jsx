@@ -271,7 +271,7 @@ const getDefaultUserEmail = () => {
         }
       });
       const response = await axios.post(
-        `${LOCAL_API_URL}/${currentUserId}/post_vehicle/`,
+        `${API_BASE_URL}/${currentUserId}/post_vehicle/`,
         formDataToSend,
         {
           withCredentials: true,

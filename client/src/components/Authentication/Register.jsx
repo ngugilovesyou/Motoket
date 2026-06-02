@@ -94,7 +94,7 @@ function Register() {
     if (!formData.role) return toast.error("Select role");
 
     try {
-      const res = await fetch(`${LOCAL_API_URL}/register/`, {
+      const res = await fetch(`${API_BASE_URL}/register/`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(formData),

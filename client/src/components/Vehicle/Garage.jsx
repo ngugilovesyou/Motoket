@@ -91,6 +91,7 @@ function Garage() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const LOCAL_API_URL = "http://127.0.0.1:8000/api";
+  const API_BASE_URL = "https://motoketapi.onrender.com/api";
 
   useEffect(() => {
     fetchVehicles();
@@ -99,7 +100,7 @@ function Garage() {
   const fetchVehicles = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${LOCAL_API_URL}/${user.id}/user_vehicles/`);
+      const response = await axios.get(`${API_BASE_URL}/${user.id}/user_vehicles/`);
       setVehicles(response.data);
       setError(null);
     } catch (err) {
@@ -124,7 +125,7 @@ function Garage() {
   const handleUpdateVehicle = async () => {
     try {
       await axios.patch(
-        `${LOCAL_API_URL}/${user.id}/${editingVehicle.id}/update/`,
+        `${API_BASE_URL}/${user.id}/${editingVehicle.id}/update/`,
         editForm
       );
       toast.success("Vehicle updated successfully!");
@@ -149,7 +150,7 @@ function Garage() {
     const { vehicleId } = deleteModal;
     setDeleteModal({ open: false, vehicleId: null, vehicleName: "" });
     try {
-      await axios.delete(`${LOCAL_API_URL}/${user.id}/${vehicleId}/delete-vehicle/`);
+      await axios.delete(`${API_BASE_URL}/${user.id}/${vehicleId}/delete-vehicle/`);
       toast.success("Vehicle listing deleted.");
       fetchVehicles();
     } catch (err) {
@@ -164,7 +165,7 @@ function Garage() {
 
   const toggleFeatured = async (vehicle) => {
     try {
-      await axios.patch(`${LOCAL_API_URL}/vehicles/${user.id}/${vehicle.id}/`, {
+      await axios.patch(`${API_BASE_URL}/vehicles/${user.id}/${vehicle.id}/`, {
         is_featured: !vehicle.is_featured,
       });
       toast.success(

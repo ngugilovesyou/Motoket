@@ -27,7 +27,7 @@ function FeaturedCars() {
     // You can implement navigation or state logic here
   };
 useEffect(()=>{
-  fetch(`${LOCAL_API_URL}/all_vehicles/?is_featured=true`, {
+  fetch(`${API_BASE_URL}/all_vehicles/?is_featured=true`, {
     method:'GET',
     headers:{
       'Content-Type': 'application/json',

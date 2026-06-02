@@ -36,7 +36,7 @@ function Login() {
       return toast.error("Email and password are required");
 
     try {
-      const res = await fetch(`${LOCAL_API_URL}/login/`, {
+      const res = await fetch(`${API_BASE_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -69,7 +69,7 @@ function Login() {
       const { email, displayName, uid } = result.user;
 
       const res = await fetch(
-        `${LOCAL_API_URL}/users/check/?email=${email}`
+        `${API_BASE_URL}/users/check/?email=${email}`
       );
       const data = await res.json();
 
@@ -77,7 +77,7 @@ function Login() {
         throw new Error("Register first before using Google login");
 
       if (!data.firebase_uid) {
-        await fetch(`${LOCAL_API_URL}/users/update-firebase/`, {
+        await fetch(`${API_BASE_URL}/users/update-firebase/`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, firebase_uid: uid }),

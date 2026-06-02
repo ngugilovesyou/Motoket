@@ -92,7 +92,7 @@ const Profile = () => {
       
       // Make API call to combined endpoint
       const response = await fetch(
-        `${LOCAL_API_URL}/${user.id}/update_profile/`,
+        `${API_BASE_URL}/${user.id}/update_profile/`,
         {
           method: "PATCH",
           body: formData,

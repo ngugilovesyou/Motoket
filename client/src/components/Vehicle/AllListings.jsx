@@ -177,7 +177,7 @@ function AllListings() {
 
     try {
       const res = await fetch(
-        `${LOCAL_API_URL}/all_vehicles/?${params.toString()}`
+        `${API_BASE_URL}/all_vehicles/?${params.toString()}`
       );
       
       if (!res.ok) throw new Error("Failed to fetch listings");
@@ -253,7 +253,7 @@ function AllListings() {
   const fetchSaved = async () => {
     try {
       const res = await fetch(
-        `${LOCAL_API_URL}/${user.id}/user-favourite/`
+        `${API_BASE_URL}/${user.id}/user-favourite/`
       );
 
       const data = await res.json();
@@ -294,7 +294,7 @@ function AllListings() {
     if (isCurrentlySaved) {
       // Call DELETE endpoint to unfavourite
       const res = await fetch(
-        `${LOCAL_API_URL}/${userId}/${listingId}/unfavourite/`,
+        `${API_BASE_URL}/${userId}/${listingId}/unfavourite/`,
         { method: 'DELETE' }
       );
 
@@ -304,7 +304,7 @@ function AllListings() {
     } else {
       // Call POST endpoint to favourite
       const res = await fetch(
-        `${LOCAL_API_URL}/${userId}/${listingId}/favourite/`,
+        `${API_BASE_URL}/${userId}/${listingId}/favourite/`,
         { method: 'POST' }
       );
 
