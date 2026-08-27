@@ -1,6 +1,5 @@
 import os
 
-# ✅ Must be first
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'motoket.settings')
 
 from django.core.asgi import get_asgi_application
